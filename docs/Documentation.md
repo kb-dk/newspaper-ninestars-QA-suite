@@ -44,6 +44,8 @@ bin/qabatch.sh <path-to-batch> <sql-connection-string>
 
 `<sql-connection-string>` is the connection string used to connect to the database with the information about the batch.
 
+The database contains information about the data in a batch, and a reference to documentation about the database will be inserted, when it is ready.
+
 ## Output
 
 Both tools will output an XML file to stdout, containing the result of the validation (success or failure) and a list of
@@ -53,6 +55,8 @@ The schema for the XML file can be found here [Schema](xsd/qaresult).
 
 Examples of output can be found here: [Success](examples/qaresult-success-example.xml)
 and [Failure](examples/qaresult-failure-example.xml)
+
+The QA Suite is a work in progress, and the schema and examples may be extended as a result of this.
 
 If the tool fails unexpectedly, it will exit with an error code larger than zero, and error messages will be printed to
 stderr.
