@@ -1,0 +1,32 @@
+<assembly>
+    <id>bundle</id>
+
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <outputDirectory>bin</outputDirectory>
+            <directory>src/main/scripts</directory>
+            <directoryMode>0775</directoryMode>
+            <fileMode>0775</fileMode>
+        </fileSet>
+        <fileSet>
+            <outputDirectory>docs</outputDirectory>
+            <directory>docs</directory>
+            <excludes>
+                <exclude>examples</exclude>
+                <exclude>xsd</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <outputDirectory>docs/xsd</outputDirectory>
+            <directory>src/main/resources/xsd</directory>
+        </fileSet>
+        <fileSet>
+            <outputDirectory>docs/examples</outputDirectory>
+            <directory>src/test/resources/examples</directory>
+        </fileSet>
+    </fileSets>
+</assembly>
