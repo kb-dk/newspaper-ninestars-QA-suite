@@ -1,0 +1,41 @@
+<qaresult xmlns="http://schemas.statsbiblioteket.dk/qaresult/" version="0.1">
+    <result>Failure</result>
+    <qafailures>
+        <qafailure>
+            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.jp2</filereference>
+            <type>jp2file</type>
+            <component>jpylyzerprofile</component>
+            <description>Lossless jp2 format was expected, but lossy compression found.</description>
+        </qafailure>
+        <qafailure>
+            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.jp2</filereference>
+            <type>filestructure</type>
+            <component>filenamedatechecker</component>
+            <description>Unexpected date: 1970-01-01. Expected date range for this reel: 1971-01-01 to 1974-12-31.
+            </description>
+        </qafailure>
+        <qafailure>
+            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.jp2</filereference>
+            <type>checksum</type>
+            <component>md5validator</component>
+            <description>Expected checksum d41d8cd98f00b204e9800998ecf8427e but was 68b329da9893e34099c7d8ad5cb9c940.
+            </description>
+        </qafailure>
+        <qafailure>
+            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.mods.xml</filereference>
+            <type>metadata</type>
+            <component>metadatatitlechecker</component>
+            <description>Unexpected title: 'BÃ¸rsen'. Expected titles for this batch are: 'Børsen'</description>
+        </qafailure>
+        <qafailure>
+            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.mods.xml</filereference>
+            <type>metadata</type>
+            <component>metadataschemachecker</component>
+            <description>XML file does not meet xml schema check</description>
+            <details>
+                ./Ninestars/STATS-BIBLIOTEKET_Deliverable/400022028241-14/1902-04-07-01/AarhusAmtstidende-1902-04-07-01-0067.mods.xml:31: element wrongItem: Schemas validity error : Element '{http://www.loc.gov/mods/v3}wrongItem': This element is not expected.
+                ./Ninestars/STATS-BIBLIOTEKET_Deliverable/400022028241-14/1902-04-07-01/AarhusAmtstidende-1902-04-07-01-0067.mods.xml fails to validate
+            </details>
+        </qafailure>
+    </qafailures>
+</qaresult>
