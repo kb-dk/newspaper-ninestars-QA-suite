@@ -43,5 +43,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</connection>
+        <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-ninestars-QA-suite</developerConnection>
+        <url>https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</url>
+    </scm>
 </project>
 
