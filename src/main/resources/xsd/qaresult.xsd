@@ -30,6 +30,19 @@
                     </xs:annotation>
                 </xs:element>
             </xs:sequence>
+            <xs:attribute name="tool" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        This contains the qa tool used for generating the report. Either 'qafile' or 'qabatch'.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="qafile"/>
+                        <xs:enumeration value="qabatch"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
             <xs:attribute name="version" use="required" type="xs:decimal">
                 <xs:annotation>
                     <xs:documentation>

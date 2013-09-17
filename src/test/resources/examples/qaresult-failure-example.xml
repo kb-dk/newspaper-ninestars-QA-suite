@@ -1,4 +1,4 @@
-<qaresult xmlns="http://schemas.statsbiblioteket.dk/qaresult/" version="0.1">
+<qaresult xmlns="http://schemas.statsbiblioteket.dk/qaresult/" tool="qabatch" version="0.1">
     <result>Failure</result>
     <qafailures>
         <qafailure>
