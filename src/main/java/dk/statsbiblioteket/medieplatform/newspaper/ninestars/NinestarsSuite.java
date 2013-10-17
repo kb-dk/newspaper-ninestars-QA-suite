@@ -1,17 +1,21 @@
-package dk.statsbiblioteket.newspaper.ninestars;
+package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
-import dk.statsbiblioteket.autonomous.ResultCollector;
-import dk.statsbiblioteket.autonomous.RunnableComponent;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.Batch;
-import dk.statsbiblioteket.newspaper.processmonitor.datasources.EventID;
+import dk.statsbiblioteket.medieplatform.autonomous.Batch;
+import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
+import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
+import dk.statsbiblioteket.util.xml.XSLT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 public class NinestarsSuite {
 
@@ -27,67 +31,83 @@ public class NinestarsSuite {
         log.info("Entered " + NinestarsSuite.class);
         Properties properties = readProperties(args);
         Batch batch = getBatch(args);
+        if (batch == null){
+            System.err.println("No batch given");
+            return;
+        }
+        ArrayList<ResultCollector> resultList = new ArrayList<>();
 
+        try {
+            RunnableComponent md5Checker = new MockComponent(properties);
+            ResultCollector md5result = runComponent(batch, properties, md5Checker);
+            resultList.add(md5result);
 
-        ResultCollector md5result = runMD5Checker(batch);
+            RunnableComponent md5Checker2 = new MockComponent(properties);
+            ResultCollector md5result2 = runComponent(batch, properties, md5Checker2);
+            resultList.add(md5result2);
 
-        ResultCollector md5result2 = runMD5Checker(batch);
-
-        ResultCollector mergedResult = mergeResults(md5result,md5result2);
-
-        String result = convertResult(mergedResult);
-
-        System.out.println(result);
-
+        } finally {
+            ResultCollector mergedResult = mergeResults(resultList);
+            String result = convertResult(mergedResult);
+            System.out.println(result);
+        }
     }
 
     private static String convertResult(ResultCollector mergedResult) {
-        return mergedResult.toReport();
+        try {
+            return XSLT.transform(Thread.currentThread().getContextClassLoader().getResource("converter.xslt"),
+                                  mergedResult.toReport());
+        } catch (TransformerException e) {
+            throw new RuntimeException("Failed to transform");
+        }
     }
 
-    private static ResultCollector mergeResults(ResultCollector... result) {
-        return result[0];
+    private static ResultCollector mergeResults(List<ResultCollector> resultCollectors) {
+        ResultCollector finalresult = new ResultCollector("batch", getVersion());
+        for (ResultCollector resultCollector : resultCollectors) {
+            finalresult = resultCollector.mergeInto(finalresult);
+        }
+        return finalresult;
+    }
+
+    private static String getVersion() {
+        return "0.1"; //TODO
     }
 
     private static Batch getBatch(String[] args) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        for (int i = 0;
+             i < args.length;
+             i++) {
+            String arg = args[i];
+            if (arg.equals("-b")) {
+                String batchFullId = args[i + 1];
+                String[] splits = batchFullId.split(Pattern.quote("-RT"));
+                Batch batch = new Batch(splits[0].replaceAll("\\w", "").trim());
+                batch.setRoundTripNumber(Integer.parseInt(splits[1].trim()));
+                return batch;
+            }
+        }
+        return null;
+
     }
 
-
-    private static ResultCollector runMD5Checker(Batch batch) {
-        RunnableComponent component = new RunnableComponent() {
-
-            @Override
-            public String getComponentName() {
-                return "MD5SumChecker";
-            }
-
-            @Override
-            public String getComponentVersion() {
-                return "0.1";
-            }
-
-            @Override
-            public EventID getEventID() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-
-            @Override
-            public void doWorkOnBatch(Batch batch,
-                                      ResultCollector resultCollector)
-                    throws
-                    Exception {
-                return;
-            }
-        };
+    private static ResultCollector runComponent(Batch batch,
+                                                Properties properties,
+                                                RunnableComponent component)
+            throws
+            WorkException {
         ResultCollector resultCollector =
                 new ResultCollector(component.getComponentName(), component.getComponentVersion());
         try {
-            component.doWorkOnBatch(batch,resultCollector);
+            component.doWorkOnBatch(batch, resultCollector);
         } catch (Exception e) {
-            resultCollector.setSuccess(false);
             //todo better stack trace print
-            resultCollector.addFailure(batch.getFullID(),e.getClass().getName(),component.getComponentName(),e.getMessage(),e.toString());
+            resultCollector.addFailure(batch.getFullID(),
+                                       e.getClass().getName(),
+                                       component.getComponentName(),
+                                       e.getMessage(),
+                                       e.toString());
+            throw new WorkException(e);
         }
         return resultCollector;
 
