@@ -1,4 +1,7 @@
 #!/bin/bash
 
-echo "Not implemented" >&2
-exit 1
+#!/bin/sh
+
+SCRIPT_DIR=$(dirname "$0")
+
+java -classpath "$SCRIPT_DIR/../lib/*" dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsSuite -c $SCRIPT_DIR/../conf/config.properties
