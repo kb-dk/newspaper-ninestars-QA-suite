@@ -5,7 +5,32 @@
         <format>tar.gz</format>
     </formats>
 
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>
+                lib
+            </outputDirectory>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <useTransitiveFiltering>true</useTransitiveFiltering>
+            <includes>
+                <include>*:*</include>
+            </includes>
+            <excludes>
+                <exclude>dk.statsbiblioteket.doms.central:*</exclude>
+                <exclude>com.sun.jersey:*</exclude>
+            </excludes>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+
     <fileSets>
+        <fileSet>
+            <filtered>true</filtered>
+            <directory>src/main/config</directory>
+            <outputDirectory>conf</outputDirectory>
+            <fileMode>664</fileMode>
+            <directoryMode>775</directoryMode>
+        </fileSet>
         <fileSet>
             <outputDirectory>bin</outputDirectory>
             <directory>src/main/scripts</directory>

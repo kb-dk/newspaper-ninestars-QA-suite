@@ -8,15 +8,21 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>dk.statsbiblioteket.newspaper</groupId>
     <artifactId>newspaper-ninestars-QA-suite</artifactId>
     <version>0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>autonomous-component</artifactId>
+            <artifactId>runnable-compoment</artifactId>
             <version>0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <!--We do NOT NEED THE central lib gooying up the place-->
+                    <artifactId>centralWebservice-lib</artifactId>
+                    <groupId>dk.statsbiblioteket.doms.central</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -49,6 +55,16 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsSuite</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
 
 
             <plugin>
