@@ -1,0 +1,21 @@
+<res:result tool="batch" version="0.1" xmlns:res="http://schemas.statsbiblioteket.dk/result/">
+  <res:outcome>Success</res:outcome>
+  <res:date>2013-11-23T15:44:07</res:date>
+  <!--Optional:-->
+  <res:failures>
+    <!--1 or more repetitions:-->
+    <res:failure>
+      <res:filereference>string</res:filereference>
+      <res:type>string</res:type>
+      <res:component>string</res:component>
+      <res:description>string</res:description>
+      <!--Optional:-->
+      <res:details>
+        quae
+        <!--You may enter ANY elements at this point-->
+        <AnyElement/>
+        ventos
+      </res:details>
+    </res:failure>
+  </res:failures>
+</res:result>
