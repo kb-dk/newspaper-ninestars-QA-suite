@@ -88,6 +88,8 @@
                     <archive>
                         <manifest>
                             <mainClass>dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsSuite</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
                 </configuration>

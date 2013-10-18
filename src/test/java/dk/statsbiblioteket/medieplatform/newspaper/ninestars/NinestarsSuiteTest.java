@@ -24,20 +24,25 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Date;
 import java.util.Properties;
 
 public class NinestarsSuiteTest {
 
+    /**
+     * Test that the batch id can be parsed from command line parameters
+     */
     @Test
     public void testParseArgs(){
-        String[] args = new String[]{"-b", "B400022028241-RT2"};
+        String[] args = new String[]{"B400022028241-RT2"};
         Batch batch = NinestarsSuite.getBatch(args);
         Assert.assertEquals(batch.getBatchID(),"400022028241");
         Assert.assertEquals(batch.getRoundTripNumber().intValue(),2);
 
     }
 
+    /**
+     * Test the conversion from a resultCollector to a ninestars QA report
+     */
     @Test
     public void testConvert() {
 
@@ -64,58 +69,20 @@ public class NinestarsSuiteTest {
 
     }
 
-    @Test
-    public void testMerger() {
-        ResultCollector resultCollector = new ResultCollector("check1", "0.1");
-        String reference = "reference";
-        String type = "type";
-        resultCollector.addFailure(reference, type, "check1", "description", "details1\n", "details2\n");
 
-
-        ResultCollector resultCollector2 = new ResultCollector("check2", "0.2");
-
-        String type2 = "type2";
-        resultCollector2.addFailure(reference, type2, "check2", "description2", "details1\n", "details2\n");
-
-        //test identity
-        ResultCollector resultCollectorIdentity = new ResultCollector("check1", "0.1");
-        resultCollector.mergeInto(resultCollectorIdentity);
-        Date now = new Date();
-        resultCollector.setTimestamp(now);
-        resultCollectorIdentity.setTimestamp(now);
-        Assert.assertEquals(resultCollectorIdentity.toReport(),resultCollector.toReport());
-
-        ResultCollector result = new ResultCollector("batch", "0.1");
-
-        Assert.assertTrue(result.isSuccess());
-
-        resultCollector.mergeInto(result);
-        Assert.assertFalse(result.isSuccess());
-        String firstMerger = result.toReport();
-
-
-        resultCollector2.mergeInto(result);
-        Assert.assertFalse(result.isSuccess());
-        String secondMerger = result.toReport();
-
-        Assert.assertNotEquals(firstMerger, secondMerger, "The second merger changed nothing");
-
-        resultCollector.mergeInto(result);
-        Assert.assertFalse(result.isSuccess());
-        String thirdMerger = result.toReport();
-
-        Assert.assertNotEquals(secondMerger, thirdMerger, "merging twice is not idempotent");
-
-
-
-    }
-
-    private void checkSchema(String converted,
+    /**
+     * Utility method to check the xml against a schema
+     * @param xml the xml to validate
+     * @param schemaFile the xml schema to use
+     * @throws SAXException if the validation failed
+     * @throws IOException if the schema could not be read
+     */
+    private void checkSchema(String xml,
                              URL schemaFile)
             throws
             SAXException,
             IOException {
-        Source xmlFile = new StreamSource(new StringReader(converted));
+        Source xmlFile = new StreamSource(new StringReader(xml));
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = schemaFactory.newSchema(schemaFile);
         Validator validator = schema.newValidator();
@@ -123,6 +90,11 @@ public class NinestarsSuiteTest {
     }
 
 
+    /**
+     * Test the invocation of the mock component
+     * @throws WorkException if the mock component failed
+     * @throws IOException
+     */
     @Test
     public void testRunComponentMock()
             throws
@@ -135,6 +107,11 @@ public class NinestarsSuiteTest {
 
     }
 
+    /**
+     * Test the invocation of the MD5CheckerComponent
+     * @throws WorkException if the work failed
+     * @throws IOException if the propertiesfile could not be read
+     */
     @Test(groups = "integrationTest", enabled = true)
     public void testRunComponentMD5()
             throws

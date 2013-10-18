@@ -21,7 +21,7 @@ public class MockComponent implements RunnableComponent {
 
     @Override
     public String getComponentVersion() {
-        return "0.1";
+        return getClass().getPackage().getImplementationVersion();
     }
 
     @Override

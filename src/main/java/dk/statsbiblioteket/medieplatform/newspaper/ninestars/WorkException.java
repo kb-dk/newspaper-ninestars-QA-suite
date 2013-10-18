@@ -1,5 +1,8 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
+/**
+ * This exception is used as a wrapper for the various exceptions that a component can throw when working
+ */
 public class WorkException extends Exception {
 
     public WorkException() {
