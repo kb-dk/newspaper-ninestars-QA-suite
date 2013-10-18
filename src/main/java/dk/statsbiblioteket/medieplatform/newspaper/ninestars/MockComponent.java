@@ -16,7 +16,7 @@ public class MockComponent implements RunnableComponent {
 
     @Override
     public String getComponentName() {
-        return "MD5SumChecker";
+        return "MockComponent";
     }
 
     @Override

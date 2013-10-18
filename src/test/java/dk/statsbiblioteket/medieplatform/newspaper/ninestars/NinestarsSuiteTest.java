@@ -18,6 +18,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
@@ -27,6 +28,15 @@ import java.util.Date;
 import java.util.Properties;
 
 public class NinestarsSuiteTest {
+
+    @Test
+    public void testParseArgs(){
+        String[] args = new String[]{"-b", "B400022028241-RT2"};
+        Batch batch = NinestarsSuite.getBatch(args);
+        Assert.assertEquals(batch.getBatchID(),"400022028241");
+        Assert.assertEquals(batch.getRoundTripNumber().intValue(),2);
+
+    }
 
     @Test
     public void testConvert() {
@@ -117,31 +127,33 @@ public class NinestarsSuiteTest {
     public void testRunComponentMock()
             throws
             WorkException,
-            FileNotFoundException {
+            IOException {
         MockComponent component = new MockComponent(getProperties());
-        ResultCollector result = NinestarsSuite.runComponent(null, component);
+        ResultCollector result1 = new ResultCollector(component.getComponentName(), component.getComponentVersion());
+        ResultCollector result = NinestarsSuite.doWork(null, component, result1);
         Assert.assertTrue(result.isSuccess());
 
     }
 
-    @Test(enabled = false)
+    @Test(groups = "integrationTest", enabled = true)
     public void testRunComponentMD5()
             throws
             WorkException,
-            FileNotFoundException {
+            IOException {
         RunnableComponent component = new MD5CheckerComponent(getProperties());
-        Batch batch = new Batch("4000");
-        ResultCollector result = NinestarsSuite.runComponent(batch, component);
+        ResultCollector result1 = new ResultCollector(component.getComponentName(), component.getComponentVersion());
+        Batch batch = new Batch("400022028241");
+        ResultCollector result = NinestarsSuite.doWork(batch, component, result1);
         Assert.assertTrue(result.isSuccess());
 
     }
 
     private Properties getProperties()
             throws
-            FileNotFoundException {
+            IOException {
         Properties props = new Properties(System.getProperties());
-        File placeholder = getFile("testBatch/placeholder");
-        props.setProperty("scratch",placeholder.getParentFile().getParentFile().getAbsolutePath());
+        File configFile = getFile("config.properties");
+        props.load(new FileInputStream(configFile));
         return props;
     }
 

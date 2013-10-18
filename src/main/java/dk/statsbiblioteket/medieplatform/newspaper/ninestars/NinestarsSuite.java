@@ -23,8 +23,7 @@ public class NinestarsSuite {
 
     private static Logger log = LoggerFactory.getLogger(NinestarsSuite.class);
     private static String[] requiredProperties =
-            new String[]{"fedora.admin.username", "fedora.admin.password", "doms.server", "pidgenerator.location",
-                         "newspaper.batch.superdir", "lockserver", "summa"}; //etc.
+            new String[]{"useFileSystem", "scratch"}; //etc.
 
     public static void main(String[] args)
             throws
@@ -39,19 +38,31 @@ public class NinestarsSuite {
         ArrayList<ResultCollector> resultList = new ArrayList<>();
 
         try {
+
             RunnableComponent component1 = new MD5CheckerComponent(properties);
-            ResultCollector result1 = runComponent(batch, component1);
-            resultList.add(result1);
+            runComponent(batch, resultList, component1);
 
             RunnableComponent component2 = new MockComponent(properties);
-            ResultCollector result2 = runComponent(batch, component2);
-            resultList.add(result2);
-
+            runComponent(batch, resultList, component2);
+        } catch (WorkException e){
+            //do nothing
         } finally {
             ResultCollector mergedResult = mergeResults(resultList);
             String result = convertResult(mergedResult);
             System.out.println(result);
         }
+    }
+
+    private static void runComponent(Batch batch,
+                                     ArrayList<ResultCollector> resultList,
+                                     RunnableComponent component1)
+            throws
+            WorkException {
+        log.info("Preparing to run component {}",component1.getComponentName());
+        ResultCollector result1 = getResultCollector(component1);
+        resultList.add(result1);
+        doWork(batch, component1, result1);
+        log.info("Completed run of component {}",component1.getComponentName());
     }
 
     protected static String convertResult(ResultCollector mergedResult) {
@@ -75,7 +86,7 @@ public class NinestarsSuite {
         return "0.1"; //TODO
     }
 
-    private static Batch getBatch(String[] args) {
+    protected static Batch getBatch(String[] args) {
         for (int i = 0;
              i < args.length;
              i++) {
@@ -83,7 +94,7 @@ public class NinestarsSuite {
             if (arg.equals("-b")) {
                 String batchFullId = args[i + 1];
                 String[] splits = batchFullId.split(Pattern.quote("-RT"));
-                Batch batch = new Batch(splits[0].replaceAll("\\w", "").trim());
+                Batch batch = new Batch(splits[0].replaceAll("[^0-9]", "").trim());
                 batch.setRoundTripNumber(Integer.parseInt(splits[1].trim()));
                 return batch;
             }
@@ -92,12 +103,11 @@ public class NinestarsSuite {
 
     }
 
-    protected static ResultCollector runComponent(Batch batch,
-                                                RunnableComponent component)
+    protected static ResultCollector doWork(Batch batch,
+                                            RunnableComponent component,
+                                            ResultCollector resultCollector)
             throws
             WorkException {
-        ResultCollector resultCollector =
-                new ResultCollector(component.getComponentName(), component.getComponentVersion());
         try {
             component.doWorkOnBatch(batch, resultCollector);
         } catch (Exception e) {
@@ -111,6 +121,10 @@ public class NinestarsSuite {
         }
         return resultCollector;
 
+    }
+
+    private static ResultCollector getResultCollector(RunnableComponent component) {
+        return new ResultCollector(component.getComponentName(), component.getComponentVersion());
     }
 
     /**
