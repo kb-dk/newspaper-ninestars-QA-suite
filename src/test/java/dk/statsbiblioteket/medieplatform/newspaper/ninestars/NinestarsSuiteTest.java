@@ -68,11 +68,7 @@ public class NinestarsSuiteTest {
         resultCollectorIdentity.setTimestamp(now);
         Assert.assertEquals(resultCollectorIdentity.toReport(),resultCollector.toReport());
 
-
-
         ResultCollector result = new ResultCollector("batch", "0.1");
-
-
 
         Assert.assertTrue(result.isSuccess());
 

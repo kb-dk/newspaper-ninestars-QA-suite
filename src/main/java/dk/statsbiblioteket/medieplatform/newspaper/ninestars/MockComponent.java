@@ -26,7 +26,7 @@ public class MockComponent implements RunnableComponent {
 
     @Override
     public String getEventID() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return "Mock_Event";
     }
 
     @Override

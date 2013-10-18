@@ -38,13 +38,13 @@ public class NinestarsSuite {
         ArrayList<ResultCollector> resultList = new ArrayList<>();
 
         try {
-            RunnableComponent md5Checker = new MockComponent(properties);
-            ResultCollector md5result = runComponent(batch, md5Checker);
-            resultList.add(md5result);
+            RunnableComponent component1 = new MockComponent(properties);
+            ResultCollector result1 = runComponent(batch, component1);
+            resultList.add(result1);
 
-            RunnableComponent md5Checker2 = new MockComponent(properties);
-            ResultCollector md5result2 = runComponent(batch, md5Checker2);
-            resultList.add(md5result2);
+            RunnableComponent component2 = new MockComponent(properties);
+            ResultCollector result2 = runComponent(batch, component2);
+            resultList.add(result2);
 
         } finally {
             ResultCollector mergedResult = mergeResults(resultList);
