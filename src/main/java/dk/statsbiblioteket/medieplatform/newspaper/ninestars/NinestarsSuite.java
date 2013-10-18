@@ -39,11 +39,11 @@ public class NinestarsSuite {
 
         try {
             RunnableComponent md5Checker = new MockComponent(properties);
-            ResultCollector md5result = runComponent(batch, properties, md5Checker);
+            ResultCollector md5result = runComponent(batch, md5Checker);
             resultList.add(md5result);
 
             RunnableComponent md5Checker2 = new MockComponent(properties);
-            ResultCollector md5result2 = runComponent(batch, properties, md5Checker2);
+            ResultCollector md5result2 = runComponent(batch, md5Checker2);
             resultList.add(md5result2);
 
         } finally {
@@ -53,7 +53,7 @@ public class NinestarsSuite {
         }
     }
 
-    private static String convertResult(ResultCollector mergedResult) {
+    protected static String convertResult(ResultCollector mergedResult) {
         try {
             return XSLT.transform(Thread.currentThread().getContextClassLoader().getResource("converter.xslt"),
                                   mergedResult.toReport());
@@ -92,7 +92,6 @@ public class NinestarsSuite {
     }
 
     private static ResultCollector runComponent(Batch batch,
-                                                Properties properties,
                                                 RunnableComponent component)
             throws
             WorkException {
