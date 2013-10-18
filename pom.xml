@@ -14,6 +14,19 @@
     <dependencies>
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
+            <artifactId>newspaper-md5-checker</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>dk.statsbiblioteket.newspaper</groupId>
+                    <artifactId>autonomous-component</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>runnable-compoment</artifactId>
             <version>0.1-SNAPSHOT</version>
             <exclusions>

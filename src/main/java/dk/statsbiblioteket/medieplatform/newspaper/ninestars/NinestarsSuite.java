@@ -3,6 +3,7 @@ package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
+import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
 import dk.statsbiblioteket.util.xml.XSLT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public class NinestarsSuite {
         ArrayList<ResultCollector> resultList = new ArrayList<>();
 
         try {
-            RunnableComponent component1 = new MockComponent(properties);
+            RunnableComponent component1 = new MD5CheckerComponent(properties);
             ResultCollector result1 = runComponent(batch, component1);
             resultList.add(result1);
 
@@ -91,7 +92,7 @@ public class NinestarsSuite {
 
     }
 
-    private static ResultCollector runComponent(Batch batch,
+    protected static ResultCollector runComponent(Batch batch,
                                                 RunnableComponent component)
             throws
             WorkException {

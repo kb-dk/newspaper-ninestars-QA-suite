@@ -1,6 +1,9 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
+import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
+import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
+import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
 import dk.statsbiblioteket.util.xml.DOM;
 import dk.statsbiblioteket.util.xml.XPathSelector;
 import org.testng.Assert;
@@ -14,10 +17,14 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Date;
+import java.util.Properties;
 
 public class NinestarsSuiteTest {
 
@@ -103,6 +110,49 @@ public class NinestarsSuiteTest {
         Schema schema = schemaFactory.newSchema(schemaFile);
         Validator validator = schema.newValidator();
         validator.validate(xmlFile);
+    }
+
+
+    @Test
+    public void testRunComponentMock()
+            throws
+            WorkException,
+            FileNotFoundException {
+        MockComponent component = new MockComponent(getProperties());
+        ResultCollector result = NinestarsSuite.runComponent(null, component);
+        Assert.assertTrue(result.isSuccess());
+
+    }
+
+    @Test(enabled = false)
+    public void testRunComponentMD5()
+            throws
+            WorkException,
+            FileNotFoundException {
+        RunnableComponent component = new MD5CheckerComponent(getProperties());
+        Batch batch = new Batch("4000");
+        ResultCollector result = NinestarsSuite.runComponent(batch, component);
+        Assert.assertTrue(result.isSuccess());
+
+    }
+
+    private Properties getProperties()
+            throws
+            FileNotFoundException {
+        Properties props = new Properties(System.getProperties());
+        File placeholder = getFile("testBatch/placeholder");
+        props.setProperty("scratch",placeholder.getParentFile().getParentFile().getAbsolutePath());
+        return props;
+    }
+
+    private File getFile(String name)
+            throws
+            FileNotFoundException {
+        try {
+            return new File(Thread.currentThread().getContextClassLoader().getResource(name).toURI());
+        } catch (URISyntaxException e) {
+            throw new FileNotFoundException(e.getMessage());
+        }
     }
 
 }
