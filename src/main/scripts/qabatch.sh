@@ -2,7 +2,7 @@
 
 #!/bin/sh
 
-SCRIPT_DIR=$(dirname "$0")
+$(dirname $(readlink -f $0))
 
 java -classpath "$SCRIPT_DIR/../lib/*" \
     dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsSuite  \
