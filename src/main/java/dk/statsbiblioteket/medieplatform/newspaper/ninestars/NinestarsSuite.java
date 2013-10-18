@@ -62,7 +62,7 @@ public class NinestarsSuite {
         }
     }
 
-    private static ResultCollector mergeResults(List<ResultCollector> resultCollectors) {
+    protected static ResultCollector mergeResults(List<ResultCollector> resultCollectors) {
         ResultCollector finalresult = new ResultCollector("batch", getVersion());
         for (ResultCollector resultCollector : resultCollectors) {
             finalresult = resultCollector.mergeInto(finalresult);
