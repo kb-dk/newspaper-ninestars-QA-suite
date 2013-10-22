@@ -131,6 +131,7 @@ public class NinestarsSuiteTest {
         Properties props = new Properties(System.getProperties());
         File configFile = getFile("config.properties");
         props.load(new FileInputStream(configFile));
+        System.out.println(props.getProperty("scratch"));
         return props;
     }
 

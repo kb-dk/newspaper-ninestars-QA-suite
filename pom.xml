@@ -126,6 +126,7 @@
                             <goal>read-project-properties</goal>
                         </goals>
                         <configuration>
+                            <quiet>true</quiet>
                             <files>
                                 <file>${integration.test.newspaper.properties}</file>
                             </files>
@@ -141,7 +142,7 @@
                         <integration.test.newspaper.testdata>${integration.test.newspaper.testdata}
                         </integration.test.newspaper.testdata>
                     </systemPropertyVariables>
-                    <forkCount>0</forkCount>
+                    <forkMode>never</forkMode>
                 </configuration>
             </plugin>
 
