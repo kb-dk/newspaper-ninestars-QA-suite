@@ -5,12 +5,15 @@ import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.util.xml.XSLT;
 
 import javax.xml.transform.TransformerException;
+import java.io.File;
 import java.util.List;
 
 public class NinestarsUtils {
     /**
      * Converts the result from the resultCollector to the ninestars qa format
+     *
      * @param result the result to convert
+     *
      * @return the ninestars xml
      */
     protected static String convertResult(ResultCollector result) {
@@ -24,7 +27,9 @@ public class NinestarsUtils {
 
     /**
      * Merge the list of resultcollecots into one resultcollector
+     *
      * @param resultCollectors the result collectors
+     *
      * @return a single merged resultcollector
      */
     protected static ResultCollector mergeResults(List<ResultCollector> resultCollectors) {
@@ -37,6 +42,7 @@ public class NinestarsUtils {
 
     /**
      * Get the version of this Suite
+     *
      * @return the version
      */
     public static String getVersion() {
@@ -45,10 +51,21 @@ public class NinestarsUtils {
 
     /**
      * Utility method to get a new initialised result collector
+     *
      * @param component the component to get name and version from
+     *
      * @return a result collector
      */
-    static ResultCollector getResultCollector(RunnableComponent component) {
+    public static ResultCollector getResultCollector(RunnableComponent component) {
         return new ResultCollector(component.getComponentName(), component.getComponentVersion());
     }
+
+    public static String getJpylyzerPath(String[] args) {
+        return new File("extras/jpylyzer/jpylyzer.py").getAbsolutePath();
+    }
+
+    public static String getControlPolicies(String[] args) {
+        return null; //Null means use default control policies
+    }
+
 }

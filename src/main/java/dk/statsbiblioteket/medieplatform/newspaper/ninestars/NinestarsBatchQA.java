@@ -4,6 +4,7 @@ import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
+import dk.statsbiblioteket.newspaper.metadatachecker.MetadataCheckerComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,12 +42,12 @@ public class NinestarsBatchQA {
         ArrayList<ResultCollector> resultList = new ArrayList<>();
         try {
             //Make the component
-            RunnableComponent component1 = new MD5CheckerComponent(properties);
+            RunnableComponent md5CheckerComponent = new MD5CheckerComponent(properties);
             //Run the component, where the result is added to the resultlist
-            runComponent(batch, resultList, component1);
+            runComponent(batch, resultList, md5CheckerComponent);
 
-            RunnableComponent component2 = new MockComponent(properties);
-            runComponent(batch, resultList, component2);
+            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties);
+            runComponent(batch, resultList, metadataCheckerComponent);
             //Add more components as neeeded
 
         } catch (WorkException e) {
@@ -85,6 +86,8 @@ public class NinestarsBatchQA {
         Properties properties = new Properties();
         File batchPath = new File(args[0]);
         properties.setProperty("scratch", batchPath.getParent());
+        properties.setProperty("jpylyzerPath",NinestarsUtils.getJpylyzerPath(args));
+        properties.setProperty("atNinestars",Boolean.TRUE.toString());
         return properties;
     }
 

@@ -24,11 +24,11 @@ public class NinestarsFileQA {
 
         File file = getFile(args);
 
-        ResultCollector resultCollector = createResultCollector();
+        ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
 
-        String controlPoliciesPath = getControlPolicies(args);
+        String controlPoliciesPath = NinestarsUtils.getControlPolicies(args);
 
-        String jpylyzerPath = getJpylyzerPath(args);
+        String jpylyzerPath = NinestarsUtils.getJpylyzerPath(args);
 
         JpylyzerValidatorEventHandler eventHandler =
                 new JpylyzerValidatorEventHandler(file.getParentFile().getAbsolutePath(),
@@ -53,20 +53,8 @@ public class NinestarsFileQA {
         if (!resultCollector.isSuccess()) {
             System.exit(1);
         }
-
     }
 
-    private static String getJpylyzerPath(String[] args) {
-        return new File("extras/jpylyzer/jpylyzer.py").getAbsolutePath();
-    }
-
-    private static String getControlPolicies(String[] args) {
-        return null; //Null means use default control policies
-    }
-
-    private static ResultCollector createResultCollector() {
-        return new ResultCollector("file",NinestarsUtils.getVersion());
-    }
 
     private static File getFile(String[] args) {
         return new File(args[0]);
