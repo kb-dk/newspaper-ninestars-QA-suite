@@ -3,6 +3,7 @@ package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
+import dk.statsbiblioteket.newspaper.BatchStructureCheckerComponent;
 import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
 import dk.statsbiblioteket.newspaper.metadatachecker.MetadataCheckerComponent;
 import org.slf4j.Logger;
@@ -19,9 +20,14 @@ public class NinestarsBatchQA {
 
     private static Logger log = LoggerFactory.getLogger(NinestarsBatchQA.class);
 
-    public static void main(String[] args)
+    public static void main(String... args)
             throws
             Exception {
+        int returnCode = doMain(args);
+        System.exit(returnCode);
+    }
+
+    protected static int doMain(String... args) {
         log.info("Entered " + NinestarsBatchQA.class);
 
         //Create the properties that needs to be passed into the components
@@ -31,12 +37,8 @@ public class NinestarsBatchQA {
         Batch batch = getBatch(args);
         if (batch == null) {
             System.err.println("No batch given");
-            return;
+            return 1;
         }
-
-        //Get the sql connect string from the command line
-        String sqlConnectString = getSQLString(args);
-
 
         //This is the list of results so far
         ArrayList<ResultCollector> resultList = new ArrayList<>();
@@ -46,26 +48,36 @@ public class NinestarsBatchQA {
             //Run the component, where the result is added to the resultlist
             runComponent(batch, resultList, md5CheckerComponent);
 
+            //Make the component
+            RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties);
+            //Run the component, where the result is added to the resultlist
+            runComponent(batch, resultList, batchStructureCheckerComponent);
+
+
             RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties);
             runComponent(batch, resultList, metadataCheckerComponent);
             //Add more components as neeeded
 
         } catch (WorkException e) {
             //do nothing, as the failure have already been reported
-        } finally {
-            ResultCollector mergedResult = NinestarsUtils.mergeResults(resultList);
-            String result = NinestarsUtils.convertResult(mergedResult);
-            System.out.println(result);
-            if (!mergedResult.isSuccess()) {
-                System.exit(1);
-            }
         }
+        ResultCollector mergedResult = NinestarsUtils.mergeResults(resultList);
+        String result = NinestarsUtils.convertResult(mergedResult);
+        System.out.println(result);
+        if (!mergedResult.isSuccess()) {
+            return 1;
+        } else {
+            return 0;
+        }
+
     }
 
     /**
      * Get the sql connect string, which should be the second command line parameter. Returns null if there is no
      * second parameter
+     *
      * @param args the command line args
+     *
      * @return the sql connect string
      */
     private static String getSQLString(String[] args) {
@@ -79,18 +91,28 @@ public class NinestarsBatchQA {
     /**
      * Create a properties construct with just one property, "scratch". Scratch denotes the folder where the batches
      * reside. It is takes as the parent of the first argument, which should be the path to the batch
+     *
      * @param args the args
+     *
      * @return a properties construct
      */
     private static Properties createProperties(String[] args) {
-        Properties properties = new Properties();
+        Properties properties = new Properties(System.getProperties());
         File batchPath = new File(args[0]);
-        properties.setProperty("scratch", batchPath.getParent());
-        properties.setProperty("jpylyzerPath",NinestarsUtils.getJpylyzerPath(args));
-        properties.setProperty("atNinestars",Boolean.TRUE.toString());
+        setIfNotSet(properties, "scratch", batchPath.getParent());
+        setIfNotSet(properties, "jpylyzerPath", NinestarsUtils.getJpylyzerPath(args));
+        setIfNotSet(properties, "atNinestars", Boolean.TRUE.toString());
+        setIfNotSet(properties, "mfpak.postgres.url", getSQLString(args));
         return properties;
     }
 
+    private static void setIfNotSet(Properties properties,
+                                    String key,
+                                    String value) {
+        if (properties.getProperty(key) == null) {
+            properties.setProperty(key, value);
+        }
+    }
 
     private static void runComponent(Batch batch,
                                      ArrayList<ResultCollector> resultList,
@@ -106,7 +128,9 @@ public class NinestarsBatchQA {
 
     /**
      * Parse the batch and round trip id from the first argument to the script
+     *
      * @param args the command line arguments
+     *
      * @return the batch id as a batch with no events
      */
     protected static Batch getBatch(String[] args) {
@@ -120,9 +144,11 @@ public class NinestarsBatchQA {
     /**
      * Call the doWork method on the runnable component, and add a failure to the result collector is the
      * method throws
-     * @param batch the batch to work on
-     * @param component the component doing the work
+     *
+     * @param batch           the batch to work on
+     * @param component       the component doing the work
      * @param resultCollector the result collector
+     *
      * @return the resultcollector
      * @throws WorkException if the component threw an exception
      */

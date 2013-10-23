@@ -125,6 +125,27 @@ public class NinestarsBatchQATest {
 
     }
 
+    /**
+        * Test the invocation of the MD5CheckerComponent
+        * @throws WorkException if the work failed
+        * @throws IOException if the propertiesfile could not be read
+        */
+       @Test(groups = "integrationTest", enabled = true)
+       public void testMain()
+               throws
+               Exception {
+           String batchFolder = System.getProperty("integration.test.newspaper.testdata") + "/small-test-batch/";
+           Properties properties = new Properties(System.getProperties());
+           properties.load(new FileInputStream(System.getProperty("integration.test.newspaper.properties")));
+           String jdbcURL = properties.getProperty("mfpak.postgres.url");
+           jdbcURL = jdbcURL+"?user="+properties.getProperty("mfpak.postgres.user");
+           jdbcURL = jdbcURL+"&password="+properties.getProperty("mfpak.postgres.password");
+           Batch batch = new Batch("400022028241");
+           System.getProperties().setProperty("atNinestars",Boolean.FALSE.toString());
+           Assert.assertEquals(NinestarsBatchQA.doMain(batchFolder + batch.getFullID(), jdbcURL),0);
+       }
+
+
     private Properties getProperties()
             throws
             IOException {
