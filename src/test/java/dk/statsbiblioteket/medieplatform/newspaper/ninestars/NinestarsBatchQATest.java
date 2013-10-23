@@ -26,7 +26,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
-public class NinestarsSuiteTest {
+public class NinestarsBatchQATest {
 
     /**
      * Test that the batch id can be parsed from command line parameters
@@ -34,7 +34,7 @@ public class NinestarsSuiteTest {
     @Test
     public void testParseArgs(){
         String[] args = new String[]{"B400022028241-RT2"};
-        Batch batch = NinestarsSuite.getBatch(args);
+        Batch batch = NinestarsBatchQA.getBatch(args);
         Assert.assertEquals(batch.getBatchID(),"400022028241");
         Assert.assertEquals(batch.getRoundTripNumber().intValue(),2);
 
@@ -51,7 +51,7 @@ public class NinestarsSuiteTest {
         String type = "type";
         resultCollector.addFailure(reference, type, "component", "description", "details1\n", "details2\n");
 
-        String converted = NinestarsSuite.convertResult(resultCollector);
+        String converted = NinestarsUtils.convertResult(resultCollector);
         //System.out.println(converted);
 
         URL schemaFile = Thread.currentThread().getContextClassLoader().getResource("xsd/qaresult.xsd");
@@ -102,7 +102,7 @@ public class NinestarsSuiteTest {
             IOException {
         MockComponent component = new MockComponent(getProperties());
         ResultCollector result1 = new ResultCollector(component.getComponentName(), component.getComponentVersion());
-        ResultCollector result = NinestarsSuite.doWork(null, component, result1);
+        ResultCollector result = NinestarsBatchQA.doWork(null, component, result1);
         Assert.assertTrue(result.isSuccess());
 
     }
@@ -120,7 +120,7 @@ public class NinestarsSuiteTest {
         RunnableComponent component = new MD5CheckerComponent(getProperties());
         ResultCollector result1 = new ResultCollector(component.getComponentName(), component.getComponentVersion());
         Batch batch = new Batch("400022028241");
-        ResultCollector result = NinestarsSuite.doWork(batch, component, result1);
+        ResultCollector result = NinestarsBatchQA.doWork(batch, component, result1);
         Assert.assertTrue(result.isSuccess());
 
     }

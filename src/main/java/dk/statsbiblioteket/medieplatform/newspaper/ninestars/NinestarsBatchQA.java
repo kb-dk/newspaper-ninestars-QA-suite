@@ -4,27 +4,24 @@ import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
-import dk.statsbiblioteket.util.xml.XSLT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
 /** This is the main class of the Ninestars QA suite */
-public class NinestarsSuite {
+public class NinestarsBatchQA {
 
 
-    private static Logger log = LoggerFactory.getLogger(NinestarsSuite.class);
+    private static Logger log = LoggerFactory.getLogger(NinestarsBatchQA.class);
 
     public static void main(String[] args)
             throws
             Exception {
-        log.info("Entered " + NinestarsSuite.class);
+        log.info("Entered " + NinestarsBatchQA.class);
 
         //Create the properties that needs to be passed into the components
         Properties properties = createProperties(args);
@@ -55,8 +52,8 @@ public class NinestarsSuite {
         } catch (WorkException e) {
             //do nothing, as the failure have already been reported
         } finally {
-            ResultCollector mergedResult = mergeResults(resultList);
-            String result = convertResult(mergedResult);
+            ResultCollector mergedResult = NinestarsUtils.mergeResults(resultList);
+            String result = NinestarsUtils.convertResult(mergedResult);
             System.out.println(result);
             if (!mergedResult.isSuccess()) {
                 System.exit(1);
@@ -98,45 +95,10 @@ public class NinestarsSuite {
             throws
             WorkException {
         log.info("Preparing to run component {}", component1.getComponentName());
-        ResultCollector result1 = getResultCollector(component1);
+        ResultCollector result1 = NinestarsUtils.getResultCollector(component1);
         resultList.add(result1);
         doWork(batch, component1, result1);
         log.info("Completed run of component {}", component1.getComponentName());
-    }
-
-    /**
-     * Converts the result from the resultCollector to the ninestars qa format
-     * @param result the result to convert
-     * @return the ninestars xml
-     */
-    protected static String convertResult(ResultCollector result) {
-        try {
-            return XSLT.transform(Thread.currentThread().getContextClassLoader().getResource("converter.xslt"),
-                                  result.toReport());
-        } catch (TransformerException e) {
-            throw new RuntimeException("Failed to transform");
-        }
-    }
-
-    /**
-     * Merge the list of resultcollecots into one resultcollector
-     * @param resultCollectors the result collectors
-     * @return a single merged resultcollector
-     */
-    protected static ResultCollector mergeResults(List<ResultCollector> resultCollectors) {
-        ResultCollector finalresult = new ResultCollector("batch", getVersion());
-        for (ResultCollector resultCollector : resultCollectors) {
-            finalresult = resultCollector.mergeInto(finalresult);
-        }
-        return finalresult;
-    }
-
-    /**
-     * Get the version of this Suite
-     * @return the version
-     */
-    private static String getVersion() {
-        return NinestarsSuite.class.getPackage().getImplementationVersion();
     }
 
     /**
@@ -179,15 +141,6 @@ public class NinestarsSuite {
         }
         return resultCollector;
 
-    }
-
-    /**
-     * Utility method to get a new initialised result collector
-     * @param component the component to get name and version from
-     * @return a result collector
-     */
-    private static ResultCollector getResultCollector(RunnableComponent component) {
-        return new ResultCollector(component.getComponentName(), component.getComponentVersion());
     }
 
 }

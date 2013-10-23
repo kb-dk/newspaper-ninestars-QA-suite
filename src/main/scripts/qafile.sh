@@ -1,4 +1,9 @@
 #!/bin/bash
 
-echo "Not implemented" >&2
-exit 1
+
+SCRIPT_DIR=$(dirname $(readlink -f $0))
+
+java -classpath "$SCRIPT_DIR/../conf:$SCRIPT_DIR/../lib/*" \
+    dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsFileQA  \
+   "$1"
+

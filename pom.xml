@@ -24,6 +24,34 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>dk.statsbiblioteket.newspaper</groupId>
+            <artifactId>newspaper-batch-metadata-checker</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>dk.statsbiblioteket.newspaper</groupId>
+                    <artifactId>autonomous-component</artifactId>
+                </exclusion>
+            </exclusions>
+
+        </dependency>
+
+        <dependency>
+            <groupId>dk.statsbiblioteket.newspaper</groupId>
+            <artifactId>newspaper-batch-metadata-checker</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <type>tar.gz</type>
+            <classifier>jpylyzer</classifier>
+            <exclusions>
+                <exclusion>
+                    <groupId>dk.statsbiblioteket.newspaper</groupId>
+                    <artifactId>autonomous-component</artifactId>
+                </exclusion>
+            </exclusions>
+
+        </dependency>
+
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
@@ -87,7 +115,8 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsSuite</mainClass>
+                            <mainClass>dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsBatchQA</mainClass>
+                            <mainClass>dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsFileQA</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
