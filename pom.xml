@@ -116,6 +116,10 @@
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </testResource>
+            <testResource>
+                <directory>src/test/testdata</directory>
+                <filtering>false</filtering>
+            </testResource>
         </testResources>
 
         <plugins>

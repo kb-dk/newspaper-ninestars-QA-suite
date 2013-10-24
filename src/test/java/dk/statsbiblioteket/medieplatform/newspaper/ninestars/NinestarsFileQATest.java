@@ -4,31 +4,40 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
 
 public class NinestarsFileQATest {
 
-    /**
-     * Test the invocation of the MD5CheckerComponent
-     *
-     * @throws WorkException       if the work failed
-     * @throws java.io.IOException if the propertiesfile could not be read
-     */
-    @Test(groups = "integrationTest", enabled = true)
-    public void testMain()
+
+    @Test(groups = "integrationTest")
+    public void testValidate()
             throws
             Exception {
 
         File jp2File = getJP2File();
-        int result = NinestarsFileQA.doMain(jp2File.getAbsolutePath());
-        Assert.assertEquals(result,0,"Failed to validate jp2file");
+        String jpylyzyrPath = getJpylyzerPath();
+        int result = NinestarsFileQA.runValidation(jp2File, null, jpylyzyrPath);
+        Assert.assertEquals(result, 0, "Failed to validate jp2file");
+    }
+
+    private String getJpylyzerPath()
+            throws
+            IOException {
+        Properties props = new Properties(System.getProperties());
+        props.load(Thread.currentThread().getContextClassLoader()
+                         .getResourceAsStream("getJpylyzerPath.properties" + ""));
+        return props.getProperty("jpylyzerPath");
+
     }
 
     private File getJP2File() {
         try {
-            return new File(Thread.currentThread().getContextClassLoader().getResource("valid.jp2").toURI());
+            return new File(Thread.currentThread().getContextClassLoader().getResource("valid.jp2")
+                                  .toURI());
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Failed to resolve valid jp2 file for tests",e);
+            throw new RuntimeException("Failed to resolve valid jp2 file for tests", e);
         }
     }
 

@@ -17,12 +17,9 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -126,25 +123,36 @@ public class NinestarsBatchQATest {
     }
 
     /**
-        * Test the invocation of the MD5CheckerComponent
-        * @throws WorkException if the work failed
-        * @throws IOException if the propertiesfile could not be read
-        */
-       @Test(groups = "integrationTest", enabled = true)
-       public void testMain()
-               throws
-               Exception {
-           String batchFolder = System.getProperty("integration.test.newspaper.testdata") + "/small-test-batch/";
-           Properties properties = new Properties(System.getProperties());
-           properties.load(new FileInputStream(System.getProperty("integration.test.newspaper.properties")));
-           String jdbcURL = properties.getProperty("mfpak.postgres.url");
-           jdbcURL = jdbcURL+"?user="+properties.getProperty("mfpak.postgres.user");
-           jdbcURL = jdbcURL+"&password="+properties.getProperty("mfpak.postgres.password");
-           Batch batch = new Batch("400022028241");
-           System.getProperties().setProperty("atNinestars",Boolean.FALSE.toString());
-           Assert.assertEquals(NinestarsBatchQA.doMain(batchFolder + batch.getFullID(), jdbcURL),0);
-       }
+     * Test the invocation of the (do)Main method of the NinestarsBatchQA
+     *
+     * @throws WorkException if the work failed
+     * @throws IOException   if the propertiesfile could not be read
+     */
+    @Test(groups = "integrationTest", enabled = true)
+    public void testMain()
+            throws
+            Exception {
+        String batchFolder = System.getProperty("integration.test.newspaper.testdata") + "/small-test-batch/";
+        Properties properties = new Properties(System.getProperties());
+        properties.load(new FileInputStream(System.getProperty("integration.test.newspaper.properties")));
+        String jdbcURL = properties.getProperty("mfpak.postgres.url");
+        jdbcURL = jdbcURL + "?user=" + properties.getProperty("mfpak.postgres.user");
+        jdbcURL = jdbcURL + "&password=" + properties.getProperty("mfpak.postgres.password");
+        Batch batch = new Batch("400022028241");
+        System.getProperties().setProperty("atNinestars", Boolean.TRUE.toString());
+        System.getProperties().setProperty("jpylyzerPath", getJpylyzerPath());
+        Assert.assertEquals(NinestarsBatchQA.doMain(batchFolder + batch.getFullID(), jdbcURL), 0);
+    }
 
+    private String getJpylyzerPath()
+              throws
+              IOException {
+          Properties props = new Properties(System.getProperties());
+          props.load(Thread.currentThread().getContextClassLoader()
+                           .getResourceAsStream("getJpylyzerPath.properties" + ""));
+          return props.getProperty("jpylyzerPath");
+
+      }
 
     private Properties getProperties()
             throws
@@ -154,16 +162,6 @@ public class NinestarsBatchQATest {
         props.setProperty("scratch",testData);
         System.out.println(props.getProperty("scratch"));
         return props;
-    }
-
-    private File getFile(String name)
-            throws
-            FileNotFoundException {
-        try {
-            return new File(Thread.currentThread().getContextClassLoader().getResource(name).toURI());
-        } catch (URISyntaxException e) {
-            throw new FileNotFoundException(e.getMessage());
-        }
     }
 
 }
