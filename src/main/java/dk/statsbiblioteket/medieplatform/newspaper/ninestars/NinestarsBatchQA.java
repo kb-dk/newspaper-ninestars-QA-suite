@@ -27,18 +27,21 @@ public class NinestarsBatchQA {
         System.exit(returnCode);
     }
 
-    //TODO usage and args parsing
     protected static int doMain(String... args) {
         log.info("Entered " + NinestarsBatchQA.class);
 
-        //Create the properties that needs to be passed into the components
-        Properties properties = createProperties(args);
+        Properties properties;
+        Batch batch;
 
-        //Get the batch (id) from the command line
-        Batch batch = getBatch(args);
-        if (batch == null) {
+        try {
+            //Create the properties that needs to be passed into the components
+            properties = createProperties(args);
+            //Get the batch (id) from the command line
+            batch = getBatch(args);
+        } catch (Exception e) {
+            usage();
             System.err.println("No batch given");
-            return 1;
+            return 2;
         }
 
         //This is the list of results so far
@@ -85,7 +88,7 @@ public class NinestarsBatchQA {
         if (args.length > 1) {
             return args[1];
         } else {
-            return null;
+            throw new RuntimeException("Missing sql paramater as second parameter");
         }
     }
 
@@ -96,6 +99,7 @@ public class NinestarsBatchQA {
      * @param args the args
      *
      * @return a properties construct
+     * @throws RuntimeException on trouble parsing arguments.
      */
     private static Properties createProperties(String[] args) {
         Properties properties = new Properties(System.getProperties());
@@ -135,7 +139,11 @@ public class NinestarsBatchQA {
      * @return the batch id as a batch with no events
      */
     protected static Batch getBatch(String[] args) {
-        String batchFullId = new File(args[0]).getName();
+        File batchPath = new File(args[0]);
+        if (!batchPath.isDirectory()) {
+            throw new RuntimeException("Must have first argument as existing directory");
+        }
+        String batchFullId = batchPath.getName();
         String[] splits = batchFullId.split(Pattern.quote("-RT"));
         Batch batch = new Batch(splits[0].replaceAll("[^0-9]", "").trim());
         batch.setRoundTripNumber(Integer.parseInt(splits[1].trim()));
@@ -173,4 +181,23 @@ public class NinestarsBatchQA {
 
     }
 
+    /**
+     * Print usage.
+     */
+    private static void usage() {
+        System.err.println("Usage: \n" + "java " + NinestarsFileQA.class.getName()
+                                   + " <batchdirectory> <sqlconnectionstring>");
+    }
+
+    /**
+     * Get file parameter from arguments
+     * @param args Will read first argument as a file name
+     * @return The file from first argument
+     * @throws RuntimeException on trouble parsing argument.
+     */
+    private static File getFile(String[] args) {
+        File file = new File(args[0]);
+        return file;
+
+    }
 }

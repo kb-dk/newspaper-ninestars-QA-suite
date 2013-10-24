@@ -25,13 +25,19 @@ public class NinestarsFileQA {
         System.exit(result);
     }
 
-    //TODO usage and args parsing
     protected static int doMain(String... args)
             throws
             FileNotFoundException {
         log.info("Entered " + NinestarsFileQA.class);
 
-        File file = getFile(args);
+        // Parse arguments
+        File file;
+        try {
+            file = getFile(args);
+        } catch (Exception e) {
+            usage();
+            return 2;
+        }
 
         ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
 
@@ -65,8 +71,25 @@ public class NinestarsFileQA {
 
     }
 
+    /**
+     * Print usage.
+     */
+    private static void usage() {
+        System.err.println("Usage: \n" + "java " + NinestarsFileQA.class.getName() + " <jp2file>");
+    }
 
+    /**
+     * Get file parameter from arguments
+     * @param args Will read first argument as a file name
+     * @return The file from first argument
+     * @throws RuntimeException on trouble parsing argument.
+     */
     private static File getFile(String[] args) {
-        return new File(args[0]);
+        File file = new File(args[0]);
+        if (!file.isFile()) {
+            throw new RuntimeException("Must have first argument as existing file");
+        }
+        return file;
+
     }
 }

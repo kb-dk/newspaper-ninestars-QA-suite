@@ -48,9 +48,8 @@ public class NinestarsUtils {
         return NinestarsUtils.class.getPackage().getImplementationVersion();
     }
 
-    //TODO use path and just jpylyzer.py
     public static String getJpylyzerPath() {
-        return new File("extras/jpylyzer/jpylyzer.py").getAbsolutePath();
+        return "jpylyzer.py";
     }
 
     public static String getControlPolicies() {
