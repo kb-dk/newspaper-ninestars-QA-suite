@@ -7,6 +7,23 @@ One tool is designed to be run on a single JPEG 2000 file, and will report any d
 file. The other tool is designed to be run on a directory structure containing the output of an entire batch, including
 data and metadata, and will report any deviations from the specifications.
 
+## What is validated
+
+The following things are validated:
+
+* All jp2 files are validated to conform to the specifications
+* All md5sums are checked to be correct
+* All directories are checked to have the correct names and contain the correct files (this is a work in progress)
+* All files are checked to have the correct names (this is a work in progress)
+* The [AvisID] and [date] are checked to conform to the data in the database (this is a work in progress)
+* All XML files are checked to conform to the correct XML Schema
+
+The following things are planned for a later release of the tool:
+
+* Completion of the directory file name validations
+* Completion of the [AvisID] and [date] validations
+* Automatic check of contents in XML metadata files, as specified in Appendix 2C, 2D, 2E, 2J and 2K
+
 ## Prerequisites
 
 The QA Suite is a work in progress, and the list of prerequisites can not yet be fully described.
@@ -16,9 +33,9 @@ Prerequisites will include:
 * A linux system. The tool has been tested on [CentOS][1] release 6.4, but most linux versions should work, provided the
     other prerequisites can be met.
 * [Java SE 7][2]
-* [Jpylyzer][3]
+* [Python][3] version 2.7 or above or 3.2 or above
 
-This list will probably be extended.
+This list may be extended.
 
 ## Running
 
@@ -41,17 +58,21 @@ bin/qabatch.sh <path-to-batch> <sql-connection-string>
 ```
 
 `<path-to-batch>` is the path to the directory containing the batch to check.
+Example: "/var/spool/batch/B400022028241-RT1"
 
 `<sql-connection-string>` is the connection string used to connect to the database with the information about the batch.
+Example: "jdbc:postgresql://dbhost/mfpak?user=mfpak&password=mfpass"
 
-The database contains information about the data in a batch, and a reference to documentation about the database will be inserted, when it is ready.
+The database contains information about the data in a batch, and a reference to documentation about the database will be
+inserted, when it is ready.
 
 ## Output
 
 Both tools will output an XML file to stdout, containing the result of the validation (success or failure) and a list of
 errors, if any.
 
-The schema for the XML file can be found here [Schema](xsd/qaresult).
+The schema for the XML file can be found here [Schema](xsd/qaresult). Note that the current version of the tool is a
+little lax in it's use of <component> and <type> values. These values will be controlled in a later version of the tool.
 
 Examples of output can be found here: [Success](examples/qaresult-success-example.xml)
 and [Failure](examples/qaresult-failure-example.xml)
@@ -61,7 +82,10 @@ The QA Suite is a work in progress, and the schema and examples may be extended 
 If the tool fails unexpectedly, it will exit with an error code larger than zero, and error messages will be printed to
 stderr.
 
+The tool also produces a log while executing. By default the log will be output to stderr with a level of WARNING. This
+can be changed by editing the file conf/logback.xml. You can configure logging as described in the  [Logback manual][4].
 
 [1]: http://www.centos.org
 [2]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[3]: http://openplanetsfoundation.org/software/jpylyzer
+[3]: http://python.org
+[4]: http://logback.qos.ch/manual/configuration.html#syntax
