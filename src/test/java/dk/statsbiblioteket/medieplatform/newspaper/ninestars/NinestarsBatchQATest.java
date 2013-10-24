@@ -150,8 +150,8 @@ public class NinestarsBatchQATest {
             throws
             IOException {
         Properties props = new Properties(System.getProperties());
-        File configFile = getFile("config.properties");
-        props.load(new FileInputStream(configFile));
+        String testData = props.getProperty("integration.test.newspaper.testdata")+"/small-test-batch";
+        props.setProperty("scratch",testData);
         System.out.println(props.getProperty("scratch"));
         return props;
     }

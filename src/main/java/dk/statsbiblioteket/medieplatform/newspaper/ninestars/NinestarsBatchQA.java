@@ -27,6 +27,7 @@ public class NinestarsBatchQA {
         System.exit(returnCode);
     }
 
+    //TODO usage and args parsing
     protected static int doMain(String... args) {
         log.info("Entered " + NinestarsBatchQA.class);
 
@@ -100,7 +101,7 @@ public class NinestarsBatchQA {
         Properties properties = new Properties(System.getProperties());
         File batchPath = new File(args[0]);
         setIfNotSet(properties, "scratch", batchPath.getParent());
-        setIfNotSet(properties, "jpylyzerPath", NinestarsUtils.getJpylyzerPath(args));
+        setIfNotSet(properties, "jpylyzerPath", NinestarsUtils.getJpylyzerPath());
         setIfNotSet(properties, "atNinestars", Boolean.TRUE.toString());
         setIfNotSet(properties, "mfpak.postgres.url", getSQLString(args));
         return properties;
@@ -120,7 +121,7 @@ public class NinestarsBatchQA {
             throws
             WorkException {
         log.info("Preparing to run component {}", component1.getComponentName());
-        ResultCollector result1 = NinestarsUtils.getResultCollector(component1);
+        ResultCollector result1 = new ResultCollector(component1.getComponentName(), component1.getComponentVersion());
         resultList.add(result1);
         doWork(batch, component1, result1);
         log.info("Completed run of component {}", component1.getComponentName());

@@ -1,7 +1,6 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
-import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.util.xml.XSLT;
 
 import javax.xml.transform.TransformerException;
@@ -49,22 +48,12 @@ public class NinestarsUtils {
         return NinestarsUtils.class.getPackage().getImplementationVersion();
     }
 
-    /**
-     * Utility method to get a new initialised result collector
-     *
-     * @param component the component to get name and version from
-     *
-     * @return a result collector
-     */
-    public static ResultCollector getResultCollector(RunnableComponent component) {
-        return new ResultCollector(component.getComponentName(), component.getComponentVersion());
-    }
-
-    public static String getJpylyzerPath(String[] args) {
+    //TODO use path and just jpylyzer.py
+    public static String getJpylyzerPath() {
         return new File("extras/jpylyzer/jpylyzer.py").getAbsolutePath();
     }
 
-    public static String getControlPolicies(String[] args) {
+    public static String getControlPolicies() {
         return null; //Null means use default control policies
     }
 

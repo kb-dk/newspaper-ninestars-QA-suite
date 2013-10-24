@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.Exception;
 import java.lang.String;
 
@@ -20,15 +21,23 @@ public class NinestarsFileQA {
     public static void main(String[] args)
             throws
             Exception {
+        int result = doMain(args);
+        System.exit(result);
+    }
+
+    //TODO usage and args parsing
+    protected static int doMain(String... args)
+            throws
+            FileNotFoundException {
         log.info("Entered " + NinestarsFileQA.class);
 
         File file = getFile(args);
 
         ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
 
-        String controlPoliciesPath = NinestarsUtils.getControlPolicies(args);
+        String controlPoliciesPath = NinestarsUtils.getControlPolicies();
 
-        String jpylyzerPath = NinestarsUtils.getJpylyzerPath(args);
+        String jpylyzerPath = NinestarsUtils.getJpylyzerPath();
 
         JpylyzerValidatorEventHandler eventHandler =
                 new JpylyzerValidatorEventHandler(file.getParentFile().getAbsolutePath(),
@@ -39,9 +48,6 @@ public class NinestarsFileQA {
 
 
         //simulate a tree iteration
-        String prefix = file.getParentFile().getAbsolutePath();
-
-
         eventHandler.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
         eventHandler.handleAttribute(new FileAttributeParsingEvent(file.getName() + JpylyzerValidatorEventHandler.CONTENTS,
                                                                    file));
@@ -50,9 +56,13 @@ public class NinestarsFileQA {
 
         String result = NinestarsUtils.convertResult(resultCollector);
         System.out.println(result);
+
         if (!resultCollector.isSuccess()) {
-            System.exit(1);
+            return 1;
         }
+
+        return 0;
+
     }
 
 

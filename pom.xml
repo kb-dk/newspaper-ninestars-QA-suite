@@ -126,7 +126,6 @@
                         <manifest>
                             <mainClass>dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsBatchQA
                             </mainClass>
-                            <mainClass>dk.statsbiblioteket.medieplatform.newspaper.ninestars.NinestarsFileQA</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
