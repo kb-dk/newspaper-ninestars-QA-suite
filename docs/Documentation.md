@@ -72,7 +72,8 @@ Both tools will output an XML file to stdout, containing the result of the valid
 errors, if any.
 
 The schema for the XML file can be found here [Schema](xsd/qaresult). Note that the current version of the tool is a
-little lax in it's use of <component> and <type> values. These values will be controlled in a later version of the tool.
+little lax in it's use of &lt;component&gt;, &lt;type&gt; and &lt;description&gt; values. These values will be
+reviewed and improved in a later version of the tool.
 
 Examples of output can be found here: [Success](examples/qaresult-success-example.xml)
 and [Failure](examples/qaresult-failure-example.xml)
