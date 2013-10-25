@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>dk.statsbiblioteket.newspaper</groupId>
@@ -9,7 +8,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>newspaper-ninestars-QA-suite</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
 
     <dependencies>
 
@@ -17,7 +16,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>dk.statsbiblioteket.newspaper</groupId>
@@ -30,7 +29,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
             <type>tar.gz</type>
             <classifier>jpylyzer</classifier>
             <exclusions>
@@ -46,7 +45,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-md5-checker</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>dk.statsbiblioteket.newspaper</groupId>
@@ -58,14 +57,14 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-structure-checker</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
 
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>runnable-compoment</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
             <exclusions>
                 <exclusion>
                     <!--We do NOT NEED THE central lib gooying up the place-->
@@ -195,6 +194,7 @@
         <connection>scm:git:https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-ninestars-QA-suite</developerConnection>
         <url>https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</url>
-    </scm>
+      <tag>newspaper-ninestars-QA-suite-0.1</tag>
+  </scm>
 </project>
 
