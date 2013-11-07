@@ -17,12 +17,13 @@ The following things are validated:
 * All files are checked to have the correct names (this is a work in progress)
 * The [AvisID] and [date] are checked to conform to the data in the database (this is a work in progress)
 * All XML files are checked to conform to the correct XML Schema
-* Automatic check of contents in XML datafiles as specified in Appendix 2C, 2J and 2K (this is a work in progress)
+* Automatic check of contents in XML metadata as specified in Appendix 2C, 2J and 2K (this is a work in progress)
 
 The following things are planned for a later release of the tool:
 
 * Completion of the directory file name validations
 * Completion of the [AvisID] and [date] validations
+* Completion of automatic check of XML metadata files as specified in Appendix 2C, 2J and 2K
 * Automatic check of contents in XML metadata files, as specified in Appendix 2D and 2E
 
 ## Prerequisites
