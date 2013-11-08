@@ -10,7 +10,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>newspaper-ninestars-QA-suite</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.5-SNAPSHOT</version>
 
     <dependencies>
 
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>0.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
@@ -199,8 +199,6 @@
                 </configuration>
             </plugin>
 
-
-
         </plugins>
     </build>
 
@@ -209,6 +207,6 @@
         <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-ninestars-QA-suite</developerConnection>
         <url>https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</url>
         <tag>HEAD</tag>
-    </scm>
+  </scm>
 </project>
 
