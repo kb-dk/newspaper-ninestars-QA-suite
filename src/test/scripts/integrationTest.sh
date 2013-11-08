@@ -2,7 +2,7 @@
 
 cd ${project.build.directory}
 
-tar -xvzf ${project.artifactId}-${project.version}-bundle.tar.gz
+tar -xzf ${project.artifactId}-${project.version}-bundle.tar.gz
 
 cd ${project.artifactId}-${project.version}
 

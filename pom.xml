@@ -199,27 +199,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
-                <executions>
-                    <execution>
-                        <id>Integration Test</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>bash</executable>
-                            <arguments>
-                                <argument>${project.build.testOutputDirectory}/integrationTest.sh</argument>
-                                <argument>${integration.test.newspaper.testdata}/small-test-batch/B400022028241-RT1</argument>
-                                <argument>${mfpak.postgres.url}?user=${mfpak.postgres.user}&amp;password=${mfpak.postgres.password}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 
 
         </plugins>
