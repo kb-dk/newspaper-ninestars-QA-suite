@@ -1,18 +1,21 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.regex.Pattern;
+
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.newspaper.BatchStructureCheckerComponent;
 import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
 import dk.statsbiblioteket.newspaper.metadatachecker.MetadataCheckerComponent;
+import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.ConfigurationProperties;
+import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration;
+import dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.regex.Pattern;
 
 /** This is the main class of the Ninestars QA suite */
 public class NinestarsBatchQA {
@@ -53,12 +56,16 @@ public class NinestarsBatchQA {
             runComponent(batch, resultList, md5CheckerComponent);
 
             //Make the component
+            MfPakConfiguration mfPakConfiguration = new MfPakConfiguration();
+            mfPakConfiguration.setDatabaseUrl(properties.getProperty(ConfigurationProperties.DATABASE_URL));
+            mfPakConfiguration.setDatabaseUser(properties.getProperty(ConfigurationProperties.DATABASE_USER));
+            mfPakConfiguration.setDatabasePassword(properties.getProperty(ConfigurationProperties.DATABASE_PASSWORD));
             RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties);
             //Run the component, where the result is added to the resultlist
             runComponent(batch, resultList, batchStructureCheckerComponent);
 
 
-            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties);
+            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, new MfPakDAO(mfPakConfiguration));
             runComponent(batch, resultList, metadataCheckerComponent);
             //Add more components as neeeded
 

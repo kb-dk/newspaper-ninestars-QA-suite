@@ -1,17 +1,15 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeBeginsParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeEndsParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.filesystem.FileAttributeParsingEvent;
-import dk.statsbiblioteket.newspaper.metadatachecker.jpylyzer.JpylyzerValidatorEventHandler;
+import dk.statsbiblioteket.newspaper.metadatachecker.jpylyzer.JpylyzingEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.Exception;
-import java.lang.String;
 
 public class NinestarsFileQA {
 
@@ -55,17 +53,13 @@ public class NinestarsFileQA {
             throws
             FileNotFoundException {
         ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
-        JpylyzerValidatorEventHandler eventHandler =
-                new JpylyzerValidatorEventHandler(file.getParentFile().getAbsolutePath(),
-                                                  resultCollector,
-                                                  controlPoliciesPath,
-                                                  jpylyzerPath,
-                                                  true);
+        JpylyzingEventHandler eventHandler =
+                new JpylyzingEventHandler(resultCollector, file.getParentFile().getAbsolutePath(), jpylyzerPath);
 
 
         //simulate a tree iteration
         eventHandler.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
-        eventHandler.handleAttribute(new FileAttributeParsingEvent(file.getName() + JpylyzerValidatorEventHandler.CONTENTS,
+        eventHandler.handleAttribute(new FileAttributeParsingEvent(file.getName() + JpylyzingEventHandler.CONTENTS,
                                                                    file));
         eventHandler.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
         eventHandler.handleFinish();
