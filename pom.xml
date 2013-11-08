@@ -22,6 +22,10 @@
                     <groupId>dk.statsbiblioteket.newspaper</groupId>
                     <artifactId>autonomous-component</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.saxon</groupId>
+                    <artifactId>saxon</artifactId>
+                </exclusion>
             </exclusions>
 
         </dependency>
@@ -37,6 +41,10 @@
                     <groupId>dk.statsbiblioteket.newspaper</groupId>
                     <artifactId>autonomous-component</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.saxon</groupId>
+                    <artifactId>saxon</artifactId>
+                </exclusion>
             </exclusions>
 
         </dependency>
@@ -51,6 +59,10 @@
                     <groupId>dk.statsbiblioteket.newspaper</groupId>
                     <artifactId>autonomous-component</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.saxon</groupId>
+                    <artifactId>saxon</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -58,6 +70,12 @@
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-structure-checker</artifactId>
             <version>0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sourceforge.saxon</groupId>
+                    <artifactId>saxon</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 
@@ -70,6 +88,10 @@
                     <!--We do NOT NEED THE central lib gooying up the place-->
                     <artifactId>centralWebservice-lib</artifactId>
                     <groupId>dk.statsbiblioteket.doms.central</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.saxon</groupId>
+                    <artifactId>saxon</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
