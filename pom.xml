@@ -16,12 +16,8 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>0.2</version>
+            <version>0.3-SNAPSHOT</version>
             <exclusions>
-                <exclusion>
-                    <groupId>dk.statsbiblioteket.newspaper</groupId>
-                    <artifactId>autonomous-component</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
                     <artifactId>saxon</artifactId>
@@ -38,10 +34,6 @@
             <classifier>jpylyzer</classifier>
             <exclusions>
                 <exclusion>
-                    <groupId>dk.statsbiblioteket.newspaper</groupId>
-                    <artifactId>autonomous-component</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
                     <artifactId>saxon</artifactId>
                 </exclusion>
@@ -55,10 +47,6 @@
             <artifactId>newspaper-md5-checker</artifactId>
             <version>0.1</version>
             <exclusions>
-                <exclusion>
-                    <groupId>dk.statsbiblioteket.newspaper</groupId>
-                    <artifactId>autonomous-component</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
                     <artifactId>saxon</artifactId>
@@ -84,11 +72,6 @@
             <artifactId>runnable-compoment</artifactId>
             <version>0.2</version>
             <exclusions>
-                <exclusion>
-                    <!--We do NOT NEED THE central lib gooying up the place-->
-                    <artifactId>centralWebservice-lib</artifactId>
-                    <groupId>dk.statsbiblioteket.doms.central</groupId>
-                </exclusion>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
                     <artifactId>saxon</artifactId>
