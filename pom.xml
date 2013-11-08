@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>dk.statsbiblioteket.newspaper</groupId>
@@ -121,6 +123,11 @@
                 <filtering>true</filtering>
             </testResource>
             <testResource>
+                <directory>src/test/scripts</directory>
+                <filtering>true</filtering>
+            </testResource>
+
+            <testResource>
                 <directory>src/test/testdata</directory>
                 <filtering>false</filtering>
             </testResource>
@@ -192,6 +199,29 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution>
+                        <id>Integration Test</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <arguments>
+                                <argument>${project.build.testOutputDirectory}/integrationTest.sh</argument>
+                                <argument>${integration.test.newspaper.testdata}/small-test-batch/B400022028241-RT1</argument>
+                                <argument>${mfpak.postgres.url}?user=${mfpak.postgres.user}&amp;password=${mfpak.postgres.password}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
         </plugins>
     </build>
 
@@ -199,7 +229,7 @@
         <connection>scm:git:https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-ninestars-QA-suite</developerConnection>
         <url>https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 </project>
 
