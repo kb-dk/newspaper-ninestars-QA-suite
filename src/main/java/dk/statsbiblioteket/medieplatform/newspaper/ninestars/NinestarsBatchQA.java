@@ -1,10 +1,5 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.regex.Pattern;
-
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
@@ -16,6 +11,11 @@ import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfigu
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.regex.Pattern;
 
 /** This is the main class of the Ninestars QA suite */
 public class NinestarsBatchQA {
@@ -60,7 +60,7 @@ public class NinestarsBatchQA {
             mfPakConfiguration.setDatabaseUrl(properties.getProperty(ConfigurationProperties.DATABASE_URL));
             mfPakConfiguration.setDatabaseUser(properties.getProperty(ConfigurationProperties.DATABASE_USER));
             mfPakConfiguration.setDatabasePassword(properties.getProperty(ConfigurationProperties.DATABASE_PASSWORD));
-            RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties);
+            RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, new MfPakDAO(mfPakConfiguration));
             //Run the component, where the result is added to the resultlist
             runComponent(batch, resultList, batchStructureCheckerComponent);
 
