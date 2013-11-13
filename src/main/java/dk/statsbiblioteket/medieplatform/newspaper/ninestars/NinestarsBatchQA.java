@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -108,15 +109,24 @@ public class NinestarsBatchQA {
      * @return a properties construct
      * @throws RuntimeException on trouble parsing arguments.
      */
-    private static Properties createProperties(String[] args) {
+    private static Properties createProperties(String[] args) throws IOException {
         Properties properties = new Properties(System.getProperties());
         File batchPath = new File(args[0]);
         setIfNotSet(properties, "scratch", batchPath.getParent());
         setIfNotSet(properties, "jpylyzerPath", NinestarsUtils.getJpylyzerPath());
         setIfNotSet(properties, "atNinestars", Boolean.TRUE.toString());
         setIfNotSet(properties, "mfpak.postgres.url", getSQLString(args));
+        setIfNotSet(properties, "batchStructure.storageDir",createTempDir().getAbsolutePath());
         return properties;
     }
+
+    private static File createTempDir() throws IOException {
+          File temp = File.createTempFile("ninestarsQA","");
+          temp.delete();
+          temp.mkdir();
+          temp.deleteOnExit();
+          return temp;
+      }
 
     private static void setIfNotSet(Properties properties,
                                     String key,
