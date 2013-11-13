@@ -1,15 +1,21 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
-import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeBeginsParsingEvent;
-import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeEndsParsingEvent;
-import dk.statsbiblioteket.medieplatform.autonomous.iterator.filesystem.FileAttributeParsingEvent;
-import dk.statsbiblioteket.newspaper.metadatachecker.jpylyzer.JpylyzingEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
+import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.AttributeParsingEvent;
+import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeBeginsParsingEvent;
+import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeEndsParsingEvent;
+import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.ParsingEvent;
+import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.TreeEventHandler;
+import dk.statsbiblioteket.medieplatform.autonomous.iterator.filesystem.FileAttributeParsingEvent;
+import dk.statsbiblioteket.newspaper.metadatachecker.SchemaValidatorEventHandler;
+import dk.statsbiblioteket.newspaper.metadatachecker.SchematronValidatorEventHandler;
+import dk.statsbiblioteket.newspaper.metadatachecker.jpylyzer.JpylyzingEventHandler;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class NinestarsFileQA {
 
@@ -55,14 +61,26 @@ public class NinestarsFileQA {
         ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
         JpylyzingEventHandler eventHandler =
                 new JpylyzingEventHandler(resultCollector, file.getParentFile().getAbsolutePath(), jpylyzerPath);
+        TreeEventHandler eventHandler2 = new SchemaValidatorEventHandler(resultCollector);
+        TreeEventHandler eventHandler3 = new SchematronValidatorEventHandler(resultCollector, controlPoliciesPath);
 
 
         //simulate a tree iteration
         eventHandler.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
-        eventHandler.handleAttribute(new FileAttributeParsingEvent(file.getName() + JpylyzingEventHandler.CONTENTS,
-                                                                   file));
+        eventHandler2.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
+        eventHandler3.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
+        eventHandler.handleAttribute(
+                new FileAttributeParsingEvent(file.getName() + JpylyzingEventHandler.CONTENTS, file));
+        ParsingEvent parsingEvent = eventHandler.popInjectedEvent();
+        eventHandler2.handleAttribute((AttributeParsingEvent) parsingEvent);
+        eventHandler3.handleAttribute((AttributeParsingEvent) parsingEvent);
         eventHandler.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
+        eventHandler2.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
+        eventHandler3.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
         eventHandler.handleFinish();
+        eventHandler2.handleFinish();
+        eventHandler3.handleFinish();
+
 
         String result = NinestarsUtils.convertResult(resultCollector);
         System.out.println(result);
