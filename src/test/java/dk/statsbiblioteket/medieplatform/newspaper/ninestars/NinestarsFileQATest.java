@@ -22,6 +22,17 @@ public class NinestarsFileQATest {
         Assert.assertEquals(result, 0, "Failed to validate jp2file");
     }
 
+    @Test(groups = "integrationTest")
+    public void testInvalidate()
+            throws
+            Exception {
+
+        File invalidJp2File = getInvalidJP2File();
+        String jpylyzyrPath = getJpylyzerPath();
+        int result = NinestarsFileQA.runValidation(invalidJp2File, null, jpylyzyrPath);
+        Assert.assertEquals(result, 1, "Failed to validate jp2file");
+    }
+
     private String getJpylyzerPath()
             throws
             IOException {
@@ -41,4 +52,12 @@ public class NinestarsFileQATest {
         }
     }
 
+    private File getInvalidJP2File() {
+        try {
+            return new File(Thread.currentThread().getContextClassLoader().getResource("invalid.jp2")
+                                  .toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Failed to resolve valid jp2 file for tests", e);
+        }
+    }
 }
