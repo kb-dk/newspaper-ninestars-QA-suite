@@ -52,7 +52,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-md5-checker</artifactId>
-            <version>0.1</version>
+            <version>0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
