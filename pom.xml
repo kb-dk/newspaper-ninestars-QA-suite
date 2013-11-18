@@ -13,12 +13,6 @@
     <version>0.5-SNAPSHOT</version>
 
     <dependencies>
-        <dependency>
-            <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>newspaper-mfpak-integration</artifactId>
-            <version>0.2</version>
-        </dependency>
-
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
