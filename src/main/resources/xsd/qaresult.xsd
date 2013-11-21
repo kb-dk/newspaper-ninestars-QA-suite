@@ -92,7 +92,8 @@
                 <xs:element ref="type">
                     <xs:annotation>
                         <xs:documentation>
-                            The type of error. Can be either 'filestructure', 'checksum', 'jp2file', or 'metadata'
+                            The type of error. Can be either 'filestructure', 'checksum', 'jp2file', 'metadata',
+                            or 'exception'
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
