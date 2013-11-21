@@ -9,6 +9,8 @@ import dk.statsbiblioteket.newspaper.metadatachecker.MetadataCheckerComponent;
 import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.ConfigurationProperties;
 import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration;
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO;
+import dk.statsbiblioteket.util.Strings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -188,10 +190,10 @@ public class NinestarsBatchQA {
         } catch (Exception e) {
             log.error("Failed to do work on component {}", component.getComponentName(), e);
             resultCollector.addFailure(batch.getFullID(),
-                                       "Exception",
-                                       component.getComponentName(),
-                                       "Unexpected error in component",
-                                       e.toString());
+                                       "exception",
+                                       component.getClass().getSimpleName(),
+                                       "Unexpected error in component: " + e.toString(),
+                                       Strings.getStackTrace(e));
             throw new WorkException(e);
         }
         return resultCollector;
