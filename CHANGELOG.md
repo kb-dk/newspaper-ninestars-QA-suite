@@ -1,4 +1,4 @@
-0.5
+1.0
 Use newest versions of all checkers. See changelog for these for details.
 Fix bug: qafile.sh did not run any tests
 
