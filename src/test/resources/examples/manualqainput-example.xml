@@ -1,0 +1,29 @@
+<mq:manualqainput xmlns:mq="http://schemas.statsbiblioteket.dk/manualqainput/"
+             version="0.5">
+    <mq:manualqafiles>
+        <mq:manualqafile>
+            <mq:filereference>B400022028241-RT1/400022028241-1/FILM-ISO-target/adresseavisen1759-400022028241-1-ISO-0001.jp2</mq:filereference>
+            <mq:type>jp2file</mq:type>
+            <mq:component>HistogramAnalyzer</mq:component>
+            <mq:description>All files on this film seem suspiciously dark</mq:description>
+        </mq:manualqafile>
+        <mq:manualqafile>
+            <mq:filereference>B400022028241-RT1/400022028241-1/1795-06-13-01/adresseavisen1759-1795-06-13-01-0006.jp2</mq:filereference>
+            <mq:type>jp2file</mq:type>
+            <mq:component>BlackEdgeAnalyzer</mq:component>
+            <mq:description>There are no dark edges on this page. Please check the cropping.</mq:description>
+        </mq:manualqafile>
+        <mq:manualqafile>
+            <mq:filereference>B400022028241-RT1/400022028241-1/FILM-ISO-target/adresseavisen1759-400022028241-1-ISO-0001.jp2</mq:filereference>
+            <mq:type>metadata</mq:type>
+            <mq:component>FilmMetadataAnalyzer</mq:component>
+            <mq:description>The values in the adresseavisen1759-400022028241-1.film.xml reductionRatio has the suspicious value "14x". Please check for correctness.</mq:description>
+        </mq:manualqafile>
+        <mq:manualqafile>
+            <mq:filereference>B400022028241-RT1/400022028241-1/1795-06-13-01/adresseavisen1759-1795-06-13-01-0006.jp2</mq:filereference>
+            <mq:type>metadata</mq:type>
+            <mq:component>ModsMetadataAnalyzer</mq:component>
+            <mq:description>The value for edition label 'BÃ¸rsen' in the adresseavisen1759-1795-06-13-01-0006.mods.xml has suspicious characters. Please check for correctness.</mq:description>
+        </mq:manualqafile>
+    </mq:manualqafiles>
+</mq:manualqainput>

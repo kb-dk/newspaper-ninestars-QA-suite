@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           targetNamespace="http://schemas.statsbiblioteket.dk/manualqainput/"
+           xmlns="http://schemas.statsbiblioteket.dk/manualqainput/">
+    <xs:annotation>
+        <xs:documentation>
+            This schema describes the input for extra manual qa files.
+        </xs:documentation>
+    </xs:annotation>
+    <xs:element name="manualqainput">
+        <xs:annotation>
+            <xs:documentation>
+                This will contain a list of files selected for manual QA and the reasons for selecting them.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="manualqafiles" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Contains a list of files for manual QA, each in their own manualqafile element.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="version" use="required" type="xs:decimal">
+                <xs:annotation>
+                    <xs:documentation>
+                        This contains the version number of the qa tool used for generating the report.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="manualqafiles">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="manualqafile"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="manualqafile">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="filereference">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The jp2 file selected for manual qa.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="type">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The type of reason for selecting file. Can be either 'jp2file', 'metadata' or 'exception'
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="component">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The name of the component that reported a failure.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="description">
+                    <xs:annotation>
+                        <xs:documentation>
+                            A human readable reason for selecting the file, and what should be checked.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="details" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Any other details reported by the component.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="filereference" type="xs:string"/>
+    <xs:element name="component" type="xs:NCName"/>
+    <xs:element name="type" type="xs:NCName"/>
+    <xs:element name="description" type="xs:string"/>
+    <xs:element name="details">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:any minOccurs="0" processContents="skip"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
