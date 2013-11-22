@@ -11,31 +11,23 @@ data and metadata, and will report any deviations from the specifications.
 
 The following things are validated:
 
-* All jp2 files are validated to conform to the specifications
-* All md5sums are checked to be correct
-* All directories are checked to have the correct names and contain the correct files (this is a work in progress)
-* All files are checked to have the correct names (this is a work in progress)
-* The [AvisID] and [date] are checked to conform to the data in the database (this is a work in progress)
-* All XML files are checked to conform to the correct XML Schema
-* Automatic check of contents in XML metadata as specified in Appendix 2C, 2J and 2K (this is a work in progress)
-
-The following things are planned for a later release of the tool:
-
-* Completion of the directory file name validations
-* Completion of the [AvisID] and [date] validations
-* Completion of automatic check of XML metadata files as specified in Appendix 2C, 2J and 2K
-* Automatic check of contents in XML metadata files, as specified in Appendix 2D and 2E
+* All jp2 files are validated to conform to the specifications, as specified in Appendix 2B
+* All md5sums are checked to be correct, as specified in Appendix 2F
+* All directories are checked to have the correct names and contain the correct files, as specified in Appendix 2F
+* All files are checked to have the correct names, as specified in Appendix 2F
+* The [AvisID] and [date] are checked to conform to the data in the database
+* All XML files are checked to conform to the correct XML Schema as specified in Appendix 2C, 2D, 2E, 2J and 2K
+* Automatic check of contents in XML metadata as specified in Appendix 2C, 2D, 2E, 2J and 2K
 
 ## Prerequisites
 
-The QA Suite is a work in progress, and the list of prerequisites can not yet be fully described.
-
-Prerequisites will include:
+Prerequisites include:
 
 * A linux system. The tool has been tested on [CentOS][1] release 6.4, but most linux versions should work, provided the
     other prerequisites can be met.
 * [Java SE 7][2]
 * [Python][3] version 2.7 or above or 3.2 or above
+* Access to the SULA provided Postgres database, or a mirror of it.
 
 This list may be extended.
 
@@ -65,22 +57,20 @@ Example: "/var/spool/batch/B400022028241-RT1"
 `<sql-connection-string>` is the connection string used to connect to the database with the information about the batch.
 Example: "jdbc:postgresql://dbhost/mfpak?user=mfpak&password=mfpass"
 
-The database contains information about the data in a batch, and a reference to documentation about the database will be
-inserted, when it is ready.
+The database contains information about the data in a batch.
 
 ## Output
 
 Both tools will output an XML file to stdout, containing the result of the validation (success or failure) and a list of
 errors, if any.
 
-The schema for the XML file can be found here [Schema](xsd/qaresult). Note that the current version of the tool is a
-little lax in it's use of &lt;component&gt;, &lt;type&gt; and &lt;description&gt; values. These values will be
-reviewed and improved in a later version of the tool.
+The schema for the XML file can be found here [Schema](xsd/qaresult).
+
+In general, messages will refer to the specification, when reporting an error. For errors regarding file structure,
+refer to this [list of checks](https://sbforge.org/display/NEWSPAPER/Structure+checks+done) for details.
 
 Examples of output can be found here: [Success](examples/qaresult-success-example.xml)
 and [Failure](examples/qaresult-failure-example.xml)
-
-The QA Suite is a work in progress, and the schema and examples may be extended as a result of this.
 
 If the tool fails unexpectedly, it will exit with an error code larger than zero, and error messages will be printed to
 stderr.

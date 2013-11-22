@@ -1,41 +1,39 @@
-<qaresult xmlns="http://schemas.statsbiblioteket.dk/qaresult/" tool="qabatch" version="0.1">
-    <result>Failure</result>
-    <qafailures>
-        <qafailure>
-            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.jp2</filereference>
-            <type>jp2file</type>
-            <component>jpylyzerprofile</component>
-            <description>Lossless jp2 format was expected, but lossy compression found.</description>
-        </qafailure>
-        <qafailure>
-            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.jp2</filereference>
-            <type>filestructure</type>
-            <component>filenamedatechecker</component>
-            <description>Unexpected date: 1970-01-01. Expected date range for this reel: 1971-01-01 to 1974-12-31.
-            </description>
-        </qafailure>
-        <qafailure>
-            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.jp2</filereference>
-            <type>checksum</type>
-            <component>md5validator</component>
-            <description>Expected checksum d41d8cd98f00b204e9800998ecf8427e but was 68b329da9893e34099c7d8ad5cb9c940.
-            </description>
-        </qafailure>
-        <qafailure>
-            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.mods.xml</filereference>
-            <type>metadata</type>
-            <component>metadatatitlechecker</component>
-            <description>Unexpected title: 'BÃ¸rsen'. Expected titles for this batch are: 'Børsen'</description>
-        </qafailure>
-        <qafailure>
-            <filereference>B400022028241-RT1/1970-01-01-01/Borsen-1970-01-01-01-0003A.mods.xml</filereference>
-            <type>metadata</type>
-            <component>metadataschemachecker</component>
-            <description>XML file does not meet xml schema check</description>
-            <details>
-                ./Ninestars/STATS-BIBLIOTEKET_Deliverable/400022028241-14/1902-04-07-01/AarhusAmtstidende-1902-04-07-01-0067.mods.xml:31: element wrongItem: Schemas validity error : Element '{http://www.loc.gov/mods/v3}wrongItem': This element is not expected.
-                ./Ninestars/STATS-BIBLIOTEKET_Deliverable/400022028241-14/1902-04-07-01/AarhusAmtstidende-1902-04-07-01-0067.mods.xml fails to validate
-            </details>
-        </qafailure>
-    </qafailures>
-</qaresult>
+<qa:qaresult xmlns:qa="http://schemas.statsbiblioteket.dk/qaresult/"
+             tool="qabatch"
+             version="0.5">
+    <qa:result>Failure</qa:result>
+    <qa:qafailures>
+        <qa:qafailure>
+            <qa:filereference>B400022028241-RT1/WORKSHIFT-ISO-TARGET/Target-000004-0001.jpylyzer.xml</qa:filereference>
+            <qa:type>jp2file</qa:type>
+            <qa:component>SchematronValidatorEventHandler</qa:component>
+            <qa:description>2B: File should be a valid JP2 file</qa:description>
+            <qa:details>Location: '/jpylyzer[0]'
+Test: 'isValidJP2 = 'True''</qa:details>
+        </qa:qafailure>
+        <qa:qafailure>
+            <qa:filereference>B400022028241-RT1/400022028241-12/17x5-06-13-01</qa:filereference>
+            <qa:type>filestructure</qa:type>
+            <qa:component>MFpakStructureChecks</qa:component>
+            <qa:description>2F-M3: Failed to parse date from edition folder: java.text.ParseException: Unparseable date: "17x5-06-13-01"</qa:description>
+        </qa:qafailure>
+        <qa:qafailure>
+            <qa:filereference>B400022028241-RT1/400022028241-12/adresseavisen1759-400022028241-13.film.xml</qa:filereference>
+            <qa:type>checksum</qa:type>
+            <qa:component>MD5CheckerComponent</qa:component>
+            <qa:description>2F-O1: Expected checksum 7ed802835913bf501162ff08befdd1aa, but was 6ed802835913bf501162ff08befdd1aa</qa:description>
+        </qa:qafailure>
+        <qa:qafailure>
+            <qa:filereference>B400022028241-RT1/400022028241-13/1795-06-15-01/adresseavisen1759-1795-06-15-01.edition.xml</qa:filereference>
+            <qa:type>metadata</qa:type>
+            <qa:component>EditionModsEventHandler</qa:component>
+            <qa:description>2D-2: title Adresse Contoirs Efterretninger does not match title in MFPak 'Kiøbenhavns Kongelig alene priviligerede Adresse-Contoirs Efterretninger'</qa:description>
+        </qa:qafailure>
+        <qa:qafailure>
+            <qa:filereference>B400022028241-RT1/400022028241-13/adresseavisen1759-400022028241-13.film.xml</qa:filereference>
+            <qa:type>metadata</qa:type>
+            <qa:component>SchemaValidatorEventHandler</qa:component>
+            <qa:description>2E: Failure validating XML data: Line 11 Column 41: cvc-complex-type.2.4.a: Invalid content was found starting with element 'avis:resolutionOfDuplicateNegative'. One of '{"http://www.statsbiblioteket.dk/avisdigitalisering/microfilm/1/0/":resolutionOfNegative}' is expected.</qa:description>
+        </qa:qafailure>
+    </qa:qafailures>
+</qa:qaresult>

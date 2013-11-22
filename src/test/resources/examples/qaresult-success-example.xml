@@ -1,3 +1,7 @@
-<qaresult xmlns="http://schemas.statsbiblioteket.dk/qaresult/" tool="qafile" version="0.1">
-    <result>Success</result>
-</qaresult>
+<qa:qaresult xmlns:qa="http://schemas.statsbiblioteket.dk/qaresult/"
+             tool="qafile"
+             version="0.5">
+    <qa:result>Success</qa:result>
+    
+    <qa:qafailures/>
+</qa:qaresult>
