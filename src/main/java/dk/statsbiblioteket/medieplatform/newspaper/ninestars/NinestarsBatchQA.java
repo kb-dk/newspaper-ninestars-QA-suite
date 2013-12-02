@@ -1,16 +1,15 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
+import dk.statsbiblioteket.medieplatform.autonomous.ConfigConstants;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.newspaper.BatchStructureCheckerComponent;
 import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
 import dk.statsbiblioteket.newspaper.metadatachecker.MetadataCheckerComponent;
-import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.ConfigurationProperties;
 import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration;
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO;
 import dk.statsbiblioteket.util.Strings;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,9 +59,9 @@ public class NinestarsBatchQA {
 
             //Make the component
             MfPakConfiguration mfPakConfiguration = new MfPakConfiguration();
-            mfPakConfiguration.setDatabaseUrl(properties.getProperty(ConfigurationProperties.DATABASE_URL));
-            mfPakConfiguration.setDatabaseUser(properties.getProperty(ConfigurationProperties.DATABASE_USER));
-            mfPakConfiguration.setDatabasePassword(properties.getProperty(ConfigurationProperties.DATABASE_PASSWORD));
+            mfPakConfiguration.setDatabaseUrl(properties.getProperty(ConfigConstants.MFPAK_URL));
+            mfPakConfiguration.setDatabaseUser(properties.getProperty(ConfigConstants.MFPAK_USER));
+            mfPakConfiguration.setDatabasePassword(properties.getProperty(ConfigConstants.MFPAK_PASSWORD));
             RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, new MfPakDAO(mfPakConfiguration));
             //Run the component, where the result is added to the resultlist
             runComponent(batch, resultList, batchStructureCheckerComponent);
@@ -114,11 +113,11 @@ public class NinestarsBatchQA {
     private static Properties createProperties(String[] args) throws IOException {
         Properties properties = new Properties(System.getProperties());
         File batchPath = new File(args[0]);
-        setIfNotSet(properties, "scratch", batchPath.getParent());
-        setIfNotSet(properties, "jpylyzerPath", NinestarsUtils.getJpylyzerPath());
-        setIfNotSet(properties, "atNinestars", Boolean.TRUE.toString());
-        setIfNotSet(properties, "mfpak.postgres.url", getSQLString(args));
-        setIfNotSet(properties, "batchStructure.storageDir",createTempDir().getAbsolutePath());
+        setIfNotSet(properties, ConfigConstants.ITERATOR_FILESYSTEM_BATCHES_FOLDER, batchPath.getParent());
+        setIfNotSet(properties, ConfigConstants.JPYLYZER_PATH, NinestarsUtils.getJpylyzerPath());
+        setIfNotSet(properties, ConfigConstants.AT_NINESTARS, Boolean.TRUE.toString());
+        setIfNotSet(properties, ConfigConstants.MFPAK_URL, getSQLString(args));
+        setIfNotSet(properties, ConfigConstants.AUTONOMOUS_BATCH_STRUCTURE_STORAGE_DIR,createTempDir().getAbsolutePath());
         return properties;
     }
 
@@ -135,6 +134,9 @@ public class NinestarsBatchQA {
                                     String value) {
         if (properties.getProperty(key) == null) {
             properties.setProperty(key, value);
+        } else {
+            System.out
+                  .println(properties.getProperty(key));
         }
     }
 

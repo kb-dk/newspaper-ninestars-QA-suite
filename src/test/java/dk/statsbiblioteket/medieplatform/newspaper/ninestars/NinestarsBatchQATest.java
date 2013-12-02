@@ -1,6 +1,7 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
+import dk.statsbiblioteket.medieplatform.autonomous.ConfigConstants;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
@@ -135,12 +136,12 @@ public class NinestarsBatchQATest {
         String batchFolder = System.getProperty("integration.test.newspaper.testdata") + "/small-test-batch/";
         Properties properties = new Properties(System.getProperties());
         properties.load(new FileInputStream(System.getProperty("integration.test.newspaper.properties")));
-        String jdbcURL = properties.getProperty("mfpak.postgres.url");
-        jdbcURL = jdbcURL + "?user=" + properties.getProperty("mfpak.postgres.user");
-        jdbcURL = jdbcURL + "&password=" + properties.getProperty("mfpak.postgres.password");
+        String jdbcURL = properties.getProperty(ConfigConstants.MFPAK_URL);
+        jdbcURL = jdbcURL + "?user=" + properties.getProperty(ConfigConstants.MFPAK_USER);
+        jdbcURL = jdbcURL + "&password=" + properties.getProperty(ConfigConstants.MFPAK_PASSWORD);
         Batch batch = new Batch("400022028241");
-        System.getProperties().setProperty("atNinestars", Boolean.TRUE.toString());
-        System.getProperties().setProperty("jpylyzerPath", getJpylyzerPath());
+        System.getProperties().setProperty(ConfigConstants.AT_NINESTARS, Boolean.TRUE.toString());
+        System.getProperties().setProperty(ConfigConstants.JPYLYZER_PATH, getJpylyzerPath());
         Assert.assertEquals(NinestarsBatchQA.doMain(batchFolder + batch.getFullID(), jdbcURL), 0);
     }
 
@@ -159,8 +160,9 @@ public class NinestarsBatchQATest {
             IOException {
         Properties props = new Properties(System.getProperties());
         String testData = props.getProperty("integration.test.newspaper.testdata")+"/small-test-batch";
-        props.setProperty("scratch",testData);
-        System.out.println(props.getProperty("scratch"));
+        props.setProperty(ConfigConstants.ITERATOR_FILESYSTEM_BATCHES_FOLDER,testData);
+        props.setProperty(ConfigConstants.AT_NINESTARS,"True");
+        System.out.println(props.getProperty(ConfigConstants.ITERATOR_FILESYSTEM_BATCHES_FOLDER));
         return props;
     }
 

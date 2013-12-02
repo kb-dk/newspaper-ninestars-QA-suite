@@ -1,5 +1,6 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
+import dk.statsbiblioteket.medieplatform.autonomous.ConfigConstants;
 import dk.statsbiblioteket.util.console.ProcessRunner;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -17,9 +18,9 @@ public class NinestarsPostPackageTest {
                 System.getProperty("integration.test.newspaper.testdata") + "/small-test-batch/" + "B400022028241-RT1";
         Properties properties = new Properties(System.getProperties());
         properties.load(new FileInputStream(System.getProperty("integration.test.newspaper.properties")));
-        String jdbcURL = properties.getProperty("mfpak.postgres.url");
-        jdbcURL = jdbcURL + "?user=" + properties.getProperty("mfpak.postgres.user");
-        jdbcURL = jdbcURL + "&password=" + properties.getProperty("mfpak.postgres.password");
+        String jdbcURL = properties.getProperty(ConfigConstants.MFPAK_URL);
+        jdbcURL = jdbcURL + "?user=" + properties.getProperty(ConfigConstants.MFPAK_USER);
+        jdbcURL = jdbcURL + "&password=" + properties.getProperty(ConfigConstants.MFPAK_PASSWORD);
         ProcessRunner runner = new ProcessRunner("bash",
                                                  Thread.currentThread().getContextClassLoader().getResource(
                                                          "integrationTest.sh").getFile(),

@@ -13,9 +13,21 @@
     <dependencies>
 
         <dependency>
+             <groupId>dk.statsbiblioteket.newspaper</groupId>
+             <artifactId>runnable-compoment</artifactId>
+             <version>1.2-SNAPSHOT</version>
+             <exclusions>
+                 <exclusion>
+                     <groupId>net.sourceforge.saxon</groupId>
+                     <artifactId>saxon</artifactId>
+                 </exclusion>
+             </exclusions>
+         </dependency>
+
+        <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
@@ -28,7 +40,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <type>tar.gz</type>
             <classifier>jpylyzer</classifier>
             <exclusions>
@@ -44,7 +56,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-md5-checker</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
@@ -56,7 +68,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-structure-checker</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
@@ -66,17 +78,6 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>runnable-compoment</artifactId>
-            <version>1.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.sourceforge.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
