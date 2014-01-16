@@ -1,3 +1,19 @@
+1.2
+Use newest version of batch event framework, which improves performance in some areas, and adds functionality not used by this component
+* Add support for fuzzy dates
+
+Use newest md5 checker
+* Use better error message on checksum errors
+
+Use newest metadata checker
+* Update MIX checks to be different on WORKSHIFT-ISO-TARGET matching 9*
+* Disable check for special characters, it is not well defined
+* No roundtrip in ALTO fileName
+* Allow empty date in dateMicrofilmCreated
+* Fix of fuzzy date pattern
+* Fix NullPointerException in ModsXPathEventHandler when missing section title element
+* Add support for fuzzy dates
+
 1.1
 Use newest version of checkers:
 - Check for option B1/B2/B9 existence of ALTO files
