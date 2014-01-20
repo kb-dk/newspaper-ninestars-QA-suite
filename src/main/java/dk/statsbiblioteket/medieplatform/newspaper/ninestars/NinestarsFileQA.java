@@ -13,6 +13,7 @@ import dk.statsbiblioteket.medieplatform.autonomous.iterator.filesystem.FileAttr
 import dk.statsbiblioteket.newspaper.metadatachecker.SchemaValidatorEventHandler;
 import dk.statsbiblioteket.newspaper.metadatachecker.SchematronValidatorEventHandler;
 import dk.statsbiblioteket.newspaper.metadatachecker.jpylyzer.JpylyzingEventHandler;
+import dk.statsbiblioteket.util.Strings;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,34 +54,42 @@ public class NinestarsFileQA {
 
     }
 
-    protected static int runValidation(File file,
-                                     String controlPoliciesPath,
-                                     String jpylyzerPath)
-            throws
-            FileNotFoundException {
+    protected static int runValidation(File file, String controlPoliciesPath, String jpylyzerPath)
+                throws FileNotFoundException {
         ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
-        JpylyzingEventHandler eventHandler =
+        JpylyzingEventHandler jpylyzingEventHandler =
                 new JpylyzingEventHandler(resultCollector, file.getParentFile().getAbsolutePath(), jpylyzerPath);
-        TreeEventHandler eventHandler2 = new SchemaValidatorEventHandler(resultCollector);
-        TreeEventHandler eventHandler3 = new SchematronValidatorEventHandler(resultCollector, controlPoliciesPath);
+        TreeEventHandler schemaValidatorEventHandler = new SchemaValidatorEventHandler(resultCollector);
+        TreeEventHandler schematronValidatorEventHandler = new SchematronValidatorEventHandler(resultCollector, controlPoliciesPath);
 
 
         //simulate a tree iteration
-        eventHandler.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
-        eventHandler2.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
-        eventHandler3.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
-        eventHandler.handleAttribute(
-                new FileAttributeParsingEvent(file.getName() + JpylyzingEventHandler.CONTENTS, file));
-        ParsingEvent parsingEvent = eventHandler.popInjectedEvent();
-        eventHandler2.handleAttribute((AttributeParsingEvent) parsingEvent);
-        eventHandler3.handleAttribute((AttributeParsingEvent) parsingEvent);
-        eventHandler.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
-        eventHandler2.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
-        eventHandler3.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
-        eventHandler.handleFinish();
-        eventHandler2.handleFinish();
-        eventHandler3.handleFinish();
-
+        jpylyzingEventHandler.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
+        schemaValidatorEventHandler.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
+        schematronValidatorEventHandler.handleNodeBegin(new DataFileNodeBeginsParsingEvent(file.getName()));
+        
+        try {
+            jpylyzingEventHandler.handleAttribute(
+                    new FileAttributeParsingEvent(file.getName() + JpylyzingEventHandler.CONTENTS, file));    
+        } catch (RuntimeException e) {
+            resultCollector.addFailure(file.getName(),
+                    "exception",
+                    JpylyzingEventHandler.class.getSimpleName(),
+                    "Unexpected error: " + e.getMessage(),
+                    Strings.getStackTrace(e));
+        }
+        // Only run the validations if jpylyzer succeeds it's run.
+        if(resultCollector.isSuccess()) {
+            ParsingEvent parsingEvent = jpylyzingEventHandler.popInjectedEvent();
+            schemaValidatorEventHandler.handleAttribute((AttributeParsingEvent) parsingEvent);
+            schematronValidatorEventHandler.handleAttribute((AttributeParsingEvent) parsingEvent);
+            jpylyzingEventHandler.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
+            schemaValidatorEventHandler.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
+            schematronValidatorEventHandler.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
+            jpylyzingEventHandler.handleFinish();
+            schemaValidatorEventHandler.handleFinish();
+            schematronValidatorEventHandler.handleFinish();    
+        }
 
         String result = NinestarsUtils.convertResult(resultCollector);
         System.out.println(result);

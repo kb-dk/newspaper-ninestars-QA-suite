@@ -33,6 +33,15 @@ public class NinestarsFileQATest {
         Assert.assertEquals(result, 1, "Failed to validate jp2file");
     }
 
+    @Test(groups = "integrationTest")
+    public void testBadJpylyzer() throws Exception {
+
+        File jp2File = getJP2File();
+        String jpylyzyrPath = getJpylyzerPath() + "not-valid-path";
+        int result = NinestarsFileQA.runValidation(jp2File, null, jpylyzyrPath);
+        Assert.assertEquals(result, 1, "Failed to validate jp2file");
+    }
+    
     private String getJpylyzerPath()
             throws
             IOException {
