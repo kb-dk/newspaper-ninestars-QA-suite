@@ -1,3 +1,6 @@
+1.3
+* Updated to newspaper-parent 1.1.
+
 1.2
 Use newest version of batch event framework, which improves performance in some areas, and adds functionality not used by this component
 * Add support for fuzzy dates
