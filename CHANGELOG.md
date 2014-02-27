@@ -1,5 +1,11 @@
 1.3
-* Updated to newspaper-parent 1.1.
+* Updated to newspaper-parent 1.1, supporting new test strategy
+* Improve the handling of failed Jpylyzer run in NinestarsFileQA
+* Update structure-checker and metadata-checker
+  * Only read SQL database information once
+  * Support new empty pages change request
+  * Update identifier scheme in agreement with Ninestars
+  * Only require brik-files to be mentioned by at least one MODS file per image, not all of them
 
 1.2
 Use newest version of batch event framework, which improves performance in some areas, and adds functionality not used by this component
