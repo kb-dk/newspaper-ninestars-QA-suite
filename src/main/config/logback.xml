@@ -1,4 +1,4 @@
-<configuration>
+<configuration scan="true">
 
     <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
