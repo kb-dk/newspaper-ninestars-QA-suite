@@ -55,8 +55,10 @@ public class NinestarsBatchQA {
         try {
             //Make the component
             RunnableComponent md5CheckerComponent = new MD5CheckerComponent(properties);
-            //Run the component, where the result is added to the resultlist
-            runComponent(batch, resultList, md5CheckerComponent);
+            if (args[2] == null || !args[2].equals("--skip-md5-check")) {
+                //Run the component, where the result is added to the resultlist
+                runComponent(batch, resultList, md5CheckerComponent);
+            }
 
             //Make the component
             MfPakConfiguration mfPakConfiguration = new MfPakConfiguration();
