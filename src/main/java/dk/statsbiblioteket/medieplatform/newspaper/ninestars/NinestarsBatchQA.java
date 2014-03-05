@@ -98,7 +98,7 @@ public class NinestarsBatchQA {
         if (args.length > 1) {
             return args[1];
         } else {
-            throw new RuntimeException("Missing sql paramater as second parameter");
+            throw new RuntimeException("Missing sql parameter as second parameter");
         }
     }
 
