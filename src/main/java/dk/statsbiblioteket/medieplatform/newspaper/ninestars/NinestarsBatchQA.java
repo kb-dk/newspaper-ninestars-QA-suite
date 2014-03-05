@@ -50,6 +50,20 @@ public class NinestarsBatchQA {
             return 2;
         }
 
+        MfPakDAO mfPakDao;
+        try {
+            MfPakConfiguration mfPakConfiguration = new MfPakConfiguration();
+            mfPakConfiguration.setDatabaseUrl(properties.getProperty(ConfigConstants.MFPAK_URL));
+            mfPakConfiguration.setDatabaseUser(properties.getProperty(ConfigConstants.MFPAK_USER));
+            mfPakConfiguration.setDatabasePassword(properties.getProperty(ConfigConstants.MFPAK_PASSWORD));
+            mfPakDao = new MfPakDAO(mfPakConfiguration);
+        } catch (Exception e) {
+            log.warn("Unable to initialize MFPAK", e);
+            usage();
+            System.err.println("Unable to initialize MFPAK");
+            return 3;
+        }
+
         //This is the list of results so far
         ArrayList<ResultCollector> resultList = new ArrayList<>();
         try {
@@ -61,16 +75,12 @@ public class NinestarsBatchQA {
             }
 
             //Make the component
-            MfPakConfiguration mfPakConfiguration = new MfPakConfiguration();
-            mfPakConfiguration.setDatabaseUrl(properties.getProperty(ConfigConstants.MFPAK_URL));
-            mfPakConfiguration.setDatabaseUser(properties.getProperty(ConfigConstants.MFPAK_USER));
-            mfPakConfiguration.setDatabasePassword(properties.getProperty(ConfigConstants.MFPAK_PASSWORD));
-            RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, new MfPakDAO(mfPakConfiguration));
+            RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, mfPakDao);
             //Run the component, where the result is added to the resultlist
             runComponent(batch, resultList, batchStructureCheckerComponent);
 
 
-            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, new MfPakDAO(mfPakConfiguration));
+            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, mfPakDao);
             runComponent(batch, resultList, metadataCheckerComponent);
             //Add more components as neeeded
 
