@@ -69,7 +69,7 @@ public class NinestarsBatchQA {
         try {
             //Make the component
             RunnableComponent md5CheckerComponent = new MD5CheckerComponent(properties);
-            if (args[2] == null || !args[2].equals("--skip-md5-check")) {
+            if (args.length < 3 || !args[2].equals("--skip-md5-check")) {
                 //Run the component, where the result is added to the resultlist
                 runComponent(batch, resultList, md5CheckerComponent);
             }
