@@ -46,7 +46,7 @@ public class NinestarsBatchQA {
             batch = getBatch(args);
         } catch (Exception e) {
             usage();
-            System.err.println("No batch given");
+            System.err.println(e.getMessage());
             return 2;
         }
 
