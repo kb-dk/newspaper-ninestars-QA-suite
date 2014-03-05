@@ -1,5 +1,8 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ConfigConstants;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
@@ -10,8 +13,6 @@ import dk.statsbiblioteket.newspaper.metadatachecker.MetadataCheckerComponent;
 import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration;
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO;
 import dk.statsbiblioteket.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -208,17 +209,5 @@ public class NinestarsBatchQA {
     private static void usage() {
         System.err.println("Usage: \n" + "java " + NinestarsFileQA.class.getName()
                                    + " <batchdirectory> <sqlconnectionstring>");
-    }
-
-    /**
-     * Get file parameter from arguments
-     * @param args Will read first argument as a file name
-     * @return The file from first argument
-     * @throws RuntimeException on trouble parsing argument.
-     */
-    private static File getFile(String[] args) {
-        File file = new File(args[0]);
-        return file;
-
     }
 }
