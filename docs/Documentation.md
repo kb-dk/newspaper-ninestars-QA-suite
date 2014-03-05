@@ -72,7 +72,9 @@ refer to this [list of checks](https://sbforge.org/display/NEWSPAPER/Structure+c
 Examples of output can be found here: [Success](examples/qaresult-success-example.xml)
 and [Failure](examples/qaresult-failure-example.xml)
 
-If the tool fails unexpectedly, it will exit with an error code larger than zero, and error messages will be printed to
+The tool will return with an exit code of 0 on validation success and 1 on validation error.
+
+If the tool fails unexpectedly, it will exit with an error code larger than 1, and error messages will be printed to
 stderr.
 
 The tool also produces a log while executing. By default the log will be output to stderr with a level of WARNING. This
