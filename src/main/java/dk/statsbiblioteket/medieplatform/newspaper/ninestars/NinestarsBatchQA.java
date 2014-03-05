@@ -40,10 +40,10 @@ public class NinestarsBatchQA {
         Batch batch;
 
         try {
-            //Create the properties that needs to be passed into the components
-            properties = createProperties(args);
             //Get the batch (id) from the command line
             batch = getBatch(args);
+            //Create the properties that needs to be passed into the components
+            properties = createProperties(args);
         } catch (Exception e) {
             usage();
             System.err.println(e.getMessage());
@@ -69,7 +69,7 @@ public class NinestarsBatchQA {
         try {
             //Make the component
             RunnableComponent md5CheckerComponent = new MD5CheckerComponent(properties);
-            if (args[2] == null || !args[2].equals("--skip-md5-check")) {
+            if (!(args.length > 2 && args[2].equals("--skip-md5-check"))) {
                 //Run the component, where the result is added to the resultlist
                 runComponent(batch, resultList, md5CheckerComponent);
             }
