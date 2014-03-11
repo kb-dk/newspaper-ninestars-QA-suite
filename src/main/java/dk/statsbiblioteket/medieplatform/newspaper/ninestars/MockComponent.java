@@ -2,6 +2,8 @@ package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
 
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
+import dk.statsbiblioteket.medieplatform.autonomous.EventStorer;
+import dk.statsbiblioteket.medieplatform.autonomous.EventTrigger;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 
@@ -35,5 +37,15 @@ public class MockComponent implements RunnableComponent {
             throws
             Exception {
         return;
+    }
+
+    @Override
+    public EventTrigger getEventTrigger() {
+        return null;
+    }
+
+    @Override
+    public EventStorer getEventStorer() {
+        return null;
     }
 }
