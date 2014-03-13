@@ -38,14 +38,4 @@ public class MockComponent implements RunnableComponent {
             Exception {
         return;
     }
-
-    @Override
-    public EventTrigger getEventTrigger() {
-        return null;
-    }
-
-    @Override
-    public EventStorer getEventStorer() {
-        return null;
-    }
 }
