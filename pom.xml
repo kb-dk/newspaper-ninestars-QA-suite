@@ -13,18 +13,6 @@
     <dependencies>
 
         <dependency>
-             <groupId>dk.statsbiblioteket.newspaper</groupId>
-             <artifactId>runnable-compoment</artifactId>
-             <version>1.6-SNAPSHOT</version>
-             <exclusions>
-                 <exclusion>
-                     <groupId>net.sourceforge.saxon</groupId>
-                     <artifactId>saxon</artifactId>
-                 </exclusion>
-             </exclusions>
-         </dependency>
-
-        <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
             <version>1.6-SNAPSHOT</version>
