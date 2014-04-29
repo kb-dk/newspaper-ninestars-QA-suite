@@ -1,3 +1,11 @@
+1.4
+* Use newest framework version
+* Updated metadata- and batchcheckers
+  * Improve section title selection
+  * Section page number checking
+  * Update check for ISO-FILM-target: Require the directory, but allow it to be empty
+  * Update error message in mfpak date checks to be clearer
+
 1.3
 * Updated to newspaper-parent 1.1, supporting new test strategy
 * Improve the handling of failed Jpylyzer run in NinestarsFileQA
