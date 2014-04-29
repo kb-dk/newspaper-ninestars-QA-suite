@@ -15,7 +15,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>1.7-SNAPSHOT</version>
+            <version>1.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>1.7-SNAPSHOT</version>
+            <version>1.6</version>
             <type>tar.gz</type>
             <classifier>jpylyzer</classifier>
             <exclusions>
@@ -44,7 +44,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-md5-checker</artifactId>
-            <version>1.4-SNAPSHOT</version>
+            <version>1.4</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
