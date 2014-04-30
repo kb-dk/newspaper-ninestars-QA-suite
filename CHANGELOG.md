@@ -5,6 +5,7 @@
   * Section page number checking
   * Update check for ISO-FILM-target: Require the directory, but allow it to be empty
   * Update error message in mfpak date checks to be clearer
+* Updated to newspaper-parent 1.2
 
 1.3
 * Updated to newspaper-parent 1.1, supporting new test strategy
