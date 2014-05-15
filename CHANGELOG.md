@@ -1,3 +1,8 @@
+1.5
+* Initalize checkers at beginning of run, to fail early on database errors, and avoid long open database connections.
+* Update batch metadata checker
+  * Require value of 0.0 in optical resolution when no ISO-FILM-target is present
+
 1.4
 * Use newest framework version
 * Updated metadata- and batchcheckers
