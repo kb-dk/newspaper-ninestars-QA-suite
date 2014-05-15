@@ -67,20 +67,21 @@ public class NinestarsBatchQA {
         //This is the list of results so far
         ArrayList<ResultCollector> resultList = new ArrayList<>();
         try {
-            //Make the component
+            //Make the components
             RunnableComponent md5CheckerComponent = new MD5CheckerComponent(properties);
+            RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, mfPakDao);
+            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, mfPakDao);
+
             if (!(args.length > 2 && args[2].equals("--skip-md5-check"))) {
-                //Run the component, where the result is added to the resultlist
+                //Run the md5 checker component, where the result is added to the resultlist
                 runComponent(batch, resultList, md5CheckerComponent);
             }
 
-            //Make the component
-            RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, mfPakDao);
-            //Run the component, where the result is added to the resultlist
+            //Run the batch structure checker component, where the result is added to the resultlist
             runComponent(batch, resultList, batchStructureCheckerComponent);
 
 
-            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, mfPakDao);
+            //Run the batch metadata checker component, where the result is added to the resultlist
             runComponent(batch, resultList, metadataCheckerComponent);
             //Add more components as neeeded
 
