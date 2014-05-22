@@ -10,6 +10,7 @@ import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.newspaper.BatchStructureCheckerComponent;
 import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
 import dk.statsbiblioteket.newspaper.metadatachecker.MetadataCheckerComponent;
+import dk.statsbiblioteket.newspaper.mfpakintegration.batchcontext.BatchContextUtils;
 import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration;
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO;
 import dk.statsbiblioteket.util.Strings;
@@ -57,6 +58,8 @@ public class NinestarsBatchQA {
             mfPakConfiguration.setDatabaseUser(properties.getProperty(ConfigConstants.MFPAK_USER));
             mfPakConfiguration.setDatabasePassword(properties.getProperty(ConfigConstants.MFPAK_PASSWORD));
             mfPakDao = new MfPakDAO(mfPakConfiguration);
+            // Force caching of batch context.
+            BatchContextUtils.buildBatchContext(mfPakDao, batch);
         } catch (Exception e) {
             log.warn("Unable to initialize MFPAK", e);
             usage();
