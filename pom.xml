@@ -8,7 +8,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>newspaper-ninestars-QA-suite</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7</version>
 
     <dependencies>
 
@@ -191,7 +191,7 @@
         <connection>scm:git:https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-ninestars-QA-suite</developerConnection>
         <url>https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</url>
-        <tag>HEAD</tag>
+        <tag>newspaper-ninestars-QA-suite-1.7</tag>
     </scm>
 </project>
 
