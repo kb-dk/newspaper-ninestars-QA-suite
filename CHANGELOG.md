@@ -1,3 +1,7 @@
+1.7 
+
+* Add support for edition date checking with overlapping MFPak dates.
+
 1.6
 
 * Cache data read from database to avoid repeated queries to the database about the same information.
