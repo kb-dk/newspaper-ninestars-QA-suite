@@ -1,3 +1,7 @@
+1.9
+
+* Update structure and metadata checkers to handle partiel dates in editions and film
+
 1.8
 
 * Update reduction ratio checks to allow for ratios up-to 25.0x, including allowing the use of decimal numbers.
