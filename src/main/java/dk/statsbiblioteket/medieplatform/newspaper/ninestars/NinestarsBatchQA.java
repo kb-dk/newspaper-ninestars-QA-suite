@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 /** This is the main class of the Ninestars QA suite */
 public class NinestarsBatchQA {
 
-
     private static Logger log = LoggerFactory.getLogger(NinestarsBatchQA.class);
 
     public static void main(String... args)
@@ -43,7 +42,7 @@ public class NinestarsBatchQA {
         try {
             //Get the batch (id) from the command line
             batch = getBatch(args);
-            //Create the properties that needs to be passed into the components
+            //Create the properties that need to be passed into the components
             properties = createProperties(args);
         } catch (Exception e) {
             usage();
@@ -86,10 +85,10 @@ public class NinestarsBatchQA {
 
             //Run the batch metadata checker component, where the result is added to the resultlist
             runComponent(batch, resultList, metadataCheckerComponent);
-            //Add more components as neeeded
+            //Add more components as needed
 
         } catch (WorkException e) {
-            //do nothing, as the failure have already been reported
+            //Do nothing, as the failure has already been reported
         }
         ResultCollector mergedResult = NinestarsUtils.mergeResults(resultList);
         String result = NinestarsUtils.convertResult(mergedResult);
