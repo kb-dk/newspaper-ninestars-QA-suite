@@ -66,6 +66,14 @@ public class NinestarsBatchQA {
             return 3;
         }
 
+        if (argsContainFlag(args, "--sleep10sec")){
+            try {
+                System.out.println("Sleeps for 10 sec so you have time to attach a debugger");
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+            }
+        }
+
         //This is the list of results so far
         ArrayList<ResultCollector> resultList = new ArrayList<>();
         try {
@@ -74,7 +82,7 @@ public class NinestarsBatchQA {
             RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, mfPakDao);
             RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, mfPakDao);
 
-            if (!(args.length > 2 && args[2].equals("--skip-md5-check"))) {
+            if (!(argsContainFlag(args, "--skip-md5-check"))) {
                 //Run the md5 checker component, where the result is added to the resultlist
                 runComponent(batch, resultList, md5CheckerComponent);
             }
@@ -99,6 +107,15 @@ public class NinestarsBatchQA {
             return 0;
         }
 
+    }
+
+    private static boolean argsContainFlag(String[] args, String flag) {
+        for (String arg : args) {
+            if (arg.equals(flag)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
