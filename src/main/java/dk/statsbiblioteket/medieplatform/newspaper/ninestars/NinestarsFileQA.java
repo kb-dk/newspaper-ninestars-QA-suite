@@ -1,5 +1,6 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
+import dk.statsbiblioteket.newspaper.metadatachecker.caches.DocumentCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,11 +57,12 @@ public class NinestarsFileQA {
 
     protected static int runValidation(File file, String controlPoliciesPath, String jpylyzerPath)
                 throws FileNotFoundException {
+        DocumentCache documentCache = new DocumentCache();
         ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
         JpylyzingEventHandler jpylyzingEventHandler =
                 new JpylyzingEventHandler(resultCollector, file.getParentFile().getAbsolutePath(), jpylyzerPath);
-        TreeEventHandler schemaValidatorEventHandler = new SchemaValidatorEventHandler(resultCollector);
-        TreeEventHandler schematronValidatorEventHandler = new SchematronValidatorEventHandler(resultCollector, controlPoliciesPath);
+        TreeEventHandler schemaValidatorEventHandler = new SchemaValidatorEventHandler(resultCollector,documentCache);
+        TreeEventHandler schematronValidatorEventHandler = new SchematronValidatorEventHandler(resultCollector, controlPoliciesPath,documentCache);
 
 
         //simulate a tree iteration
