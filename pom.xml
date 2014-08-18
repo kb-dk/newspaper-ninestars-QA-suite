@@ -15,7 +15,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>1.11</version>
+            <version>1.12-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
@@ -28,53 +28,31 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>1.11</version>
+            <version>1.12-SNAPSHOT</version>
             <type>tar.gz</type>
             <classifier>jpylyzer</classifier>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.sourceforge.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-            </exclusions>
-
-        </dependency>
+                  </dependency>
 
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-md5-checker</artifactId>
             <version>1.4</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.sourceforge.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-            </exclusions>
+
         </dependency>
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-structure-checker</artifactId>
-            <version>1.7</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.sourceforge.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.8-SNAPSHOT</version>
+
         </dependency>
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-mfpak-integration</artifactId>
-            <version>1.8</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.sourceforge.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.9</version>
+
         </dependency>
 
         <dependency>
