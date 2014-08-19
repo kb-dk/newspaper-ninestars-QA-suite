@@ -90,7 +90,6 @@ public class NinestarsBatchQA {
             //Run the batch structure checker component, where the result is added to the resultlist
             runComponent(batch, resultList, batchStructureCheckerComponent);
 
-
             //Run the batch metadata checker component, where the result is added to the resultlist
             runComponent(batch, resultList, metadataCheckerComponent);
             //Add more components as needed
