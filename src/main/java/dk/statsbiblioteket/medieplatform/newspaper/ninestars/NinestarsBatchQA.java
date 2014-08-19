@@ -151,6 +151,7 @@ public class NinestarsBatchQA {
         setIfNotSet(properties, ConfigConstants.AT_NINESTARS, Boolean.TRUE.toString());
         setIfNotSet(properties, ConfigConstants.MFPAK_URL, getSQLString(args));
         setIfNotSet(properties, ConfigConstants.AUTONOMOUS_BATCH_STRUCTURE_STORAGE_DIR,createTempDir().getAbsolutePath());
+        setIfNotSet(properties,ConfigConstants.THREADS_PER_BATCH, Runtime.getRuntime().availableProcessors()+"");
         return properties;
     }
 
