@@ -1,12 +1,12 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
-import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.AttributeParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeBeginsParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeEndsParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.ParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.DefaultTreeEventHandler;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.EventRunner;
+import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.TreeEventHandler;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.filesystem.FileAttributeParsingEvent;
 import dk.statsbiblioteket.newspaper.metadatachecker.SchemaValidatorEventHandler;
 import dk.statsbiblioteket.newspaper.metadatachecker.SchematronValidatorEventHandler;
@@ -67,7 +67,7 @@ public class NinestarsFileQA {
 
 
         EventRunner runner = new EventRunner(null,
-                Arrays.asList(jpylyzingEventHandler, schemaValidatorEventHandler, schematronValidatorEventHandler),
+                Arrays.asList((TreeEventHandler)jpylyzingEventHandler, schemaValidatorEventHandler, schematronValidatorEventHandler),
                 resultCollector);
 
         runner.handleNodeBegins(new DataFileNodeBeginsParsingEvent(file.getName()));
@@ -85,7 +85,7 @@ public class NinestarsFileQA {
         // Only run the validations if jpylyzer succeeds it's run.
         if(resultCollector.isSuccess()) {
             ParsingEvent parsingEvent = runner.popInjectedEvent();
-            runner.handleAttribute((AttributeParsingEvent) parsingEvent);
+            runner.handleAttribute(parsingEvent);
             runner.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
             runner.handleFinish();
         }
