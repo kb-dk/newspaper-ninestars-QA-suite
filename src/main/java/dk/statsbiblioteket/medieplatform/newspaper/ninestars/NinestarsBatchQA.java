@@ -26,19 +26,15 @@ public class NinestarsBatchQA {
 
     private static Logger log = LoggerFactory.getLogger(NinestarsBatchQA.class);
 
-    public static void main(String... args)
-            throws
-            Exception {
+    public static void main(String... args) throws Exception {
         int returnCode = doMain(args);
         System.exit(returnCode);
     }
 
     protected static int doMain(String... args) {
         log.info("Entered " + NinestarsBatchQA.class);
-
         Properties properties;
         Batch batch;
-
         try {
             //Get the batch (id) from the command line
             batch = getBatch(args);
@@ -49,7 +45,6 @@ public class NinestarsBatchQA {
             System.err.println(e.getMessage());
             return 2;
         }
-
         MfPakDAO mfPakDao;
         try {
             MfPakConfiguration mfPakConfiguration = new MfPakConfiguration();
@@ -65,15 +60,13 @@ public class NinestarsBatchQA {
             System.err.println("Unable to initialize MFPAK");
             return 3;
         }
-
-        if (argsContainFlag(args, "--sleep10sec")){
+        if (argsContainFlag(args, "--sleep10sec")) {
             try {
                 System.out.println("Sleeps for 10 sec so you have time to attach a debugger");
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
             }
         }
-
         //This is the list of results so far
         ArrayList<ResultCollector> resultList = new ArrayList<>();
         try {
@@ -81,21 +74,19 @@ public class NinestarsBatchQA {
             RunnableComponent md5CheckerComponent = new MD5CheckerComponent(properties);
             RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, mfPakDao);
             RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, mfPakDao);
-
             if (!(argsContainFlag(args, "--skip-md5-check"))) {
                 //Run the md5 checker component, where the result is added to the resultlist
                 runComponent(batch, resultList, md5CheckerComponent);
             }
-
             //Run the batch structure checker component, where the result is added to the resultlist
             runComponent(batch, resultList, batchStructureCheckerComponent);
-
             //Run the batch metadata checker component, where the result is added to the resultlist
             runComponent(batch, resultList, metadataCheckerComponent);
             //Add more components as needed
-
         } catch (WorkException e) {
             //Do nothing, as the failure has already been reported
+        } finally {
+            mfPakDao.close();
         }
         ResultCollector mergedResult = NinestarsUtils.mergeResults(resultList);
         String result = NinestarsUtils.convertResult(mergedResult);
@@ -105,12 +96,11 @@ public class NinestarsBatchQA {
         } else {
             return 0;
         }
-
     }
 
     private static boolean argsContainFlag(String[] args, String flag) {
         for (String arg : args) {
-            if (arg.equals(flag)){
+            if (arg.equals(flag)) {
                 return true;
             }
         }
@@ -149,35 +139,31 @@ public class NinestarsBatchQA {
         setIfNotSet(properties, ConfigConstants.JPYLYZER_PATH, NinestarsUtils.getJpylyzerPath());
         setIfNotSet(properties, ConfigConstants.AT_NINESTARS, Boolean.TRUE.toString());
         setIfNotSet(properties, ConfigConstants.MFPAK_URL, getSQLString(args));
-        setIfNotSet(properties, ConfigConstants.AUTONOMOUS_BATCH_STRUCTURE_STORAGE_DIR,createTempDir().getAbsolutePath());
-        setIfNotSet(properties,ConfigConstants.THREADS_PER_BATCH, Runtime.getRuntime().availableProcessors()+"");
+        setIfNotSet(properties,
+                ConfigConstants.AUTONOMOUS_BATCH_STRUCTURE_STORAGE_DIR,
+                createTempDir().getAbsolutePath());
+        setIfNotSet(properties, ConfigConstants.THREADS_PER_BATCH, Runtime.getRuntime().availableProcessors() + "");
         return properties;
     }
 
     private static File createTempDir() throws IOException {
-          File temp = File.createTempFile("ninestarsQA","");
-          temp.delete();
-          temp.mkdir();
-          temp.deleteOnExit();
-          return temp;
-      }
+        File temp = File.createTempFile("ninestarsQA", "");
+        temp.delete();
+        temp.mkdir();
+        temp.deleteOnExit();
+        return temp;
+    }
 
-    private static void setIfNotSet(Properties properties,
-                                    String key,
-                                    String value) {
+    private static void setIfNotSet(Properties properties, String key, String value) {
         if (properties.getProperty(key) == null) {
             properties.setProperty(key, value);
         } else {
-            System.out
-                  .println(properties.getProperty(key));
+            System.out.println(properties.getProperty(key));
         }
     }
 
-    private static void runComponent(Batch batch,
-                                     ArrayList<ResultCollector> resultList,
-                                     RunnableComponent component1)
-            throws
-            WorkException {
+    private static void runComponent(Batch batch, ArrayList<ResultCollector> resultList,
+                                     RunnableComponent component1) throws WorkException {
         log.info("Preparing to run component {}", component1.getComponentName());
         ResultCollector result1 = new ResultCollector(component1.getComponentName(), component1.getComponentVersion());
         resultList.add(result1);
@@ -215,31 +201,26 @@ public class NinestarsBatchQA {
      * @return the resultcollector
      * @throws WorkException if the component threw an exception
      */
-    protected static ResultCollector doWork(Batch batch,
-                                            RunnableComponent component,
-                                            ResultCollector resultCollector)
-            throws
-            WorkException {
+    protected static ResultCollector doWork(Batch batch, RunnableComponent component,
+                                            ResultCollector resultCollector) throws WorkException {
         try {
             component.doWorkOnBatch(batch, resultCollector);
         } catch (Exception e) {
             log.error("Failed to do work on component {}", component.getComponentName(), e);
             resultCollector.addFailure(batch.getFullID(),
-                                       "exception",
-                                       component.getClass().getSimpleName(),
-                                       "Unexpected error in component: " + e.toString(),
-                                       Strings.getStackTrace(e));
+                    "exception",
+                    component.getClass().getSimpleName(),
+                    "Unexpected error in component: " + e.toString(),
+                    Strings.getStackTrace(e));
             throw new WorkException(e);
         }
         return resultCollector;
-
     }
 
     /**
      * Print usage.
      */
     private static void usage() {
-        System.err.println("Usage: \n" + "java " + NinestarsFileQA.class.getName()
-                                   + " <batchdirectory> <sqlconnectionstring>");
+        System.err.println("Usage: \n" + "java " + NinestarsFileQA.class.getName() + " <batchdirectory> <sqlconnectionstring>");
     }
 }

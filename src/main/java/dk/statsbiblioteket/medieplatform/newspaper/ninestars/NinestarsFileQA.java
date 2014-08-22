@@ -1,9 +1,9 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
+import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.AttributeParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeBeginsParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.DataFileNodeEndsParsingEvent;
-import dk.statsbiblioteket.medieplatform.autonomous.iterator.common.ParsingEvent;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.DefaultTreeEventHandler;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.EventRunner;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.TreeEventHandler;
@@ -25,18 +25,13 @@ public class NinestarsFileQA {
 
     private static Logger log = LoggerFactory.getLogger(NinestarsFileQA.class);
 
-    public static void main(String[] args)
-            throws
-            Exception {
+    public static void main(String[] args) throws Exception {
         int result = doMain(args);
         System.exit(result);
     }
 
-    protected static int doMain(String... args)
-            throws
-            FileNotFoundException {
+    protected static int doMain(String... args) throws FileNotFoundException {
         log.info("Entered " + NinestarsFileQA.class);
-
         // Parse arguments
         File file;
         try {
@@ -45,36 +40,33 @@ public class NinestarsFileQA {
             usage();
             return 2;
         }
-
-
-
         String controlPoliciesPath = NinestarsUtils.getControlPolicies();
-
         String jpylyzerPath = NinestarsUtils.getJpylyzerPath();
-
         return runValidation(file, controlPoliciesPath, jpylyzerPath);
-
     }
 
-    protected static int runValidation(File file, String controlPoliciesPath, String jpylyzerPath)
-                throws FileNotFoundException {
+    protected static int runValidation(File file, String controlPoliciesPath, String jpylyzerPath) throws
+                                                                                                   FileNotFoundException {
         DocumentCache documentCache = new DocumentCache();
         ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
-        JpylyzingEventHandler jpylyzingEventHandler =
-                new JpylyzingEventHandler(resultCollector, file.getParentFile().getAbsolutePath(), jpylyzerPath);
-        DefaultTreeEventHandler schemaValidatorEventHandler = new SchemaValidatorEventHandler(resultCollector,documentCache);
-        DefaultTreeEventHandler schematronValidatorEventHandler = new SchematronValidatorEventHandler(resultCollector, controlPoliciesPath,documentCache);
-
-
+        JpylyzingEventHandler jpylyzingEventHandler = new JpylyzingEventHandler(resultCollector,
+                file.getParentFile().getAbsolutePath(),
+                jpylyzerPath);
+        DefaultTreeEventHandler schemaValidatorEventHandler = new SchemaValidatorEventHandler(resultCollector,
+                documentCache);
+        DefaultTreeEventHandler schematronValidatorEventHandler = new SchematronValidatorEventHandler(resultCollector,
+                controlPoliciesPath,
+                documentCache);
         EventRunner runner = new EventRunner(null,
-                Arrays.asList((TreeEventHandler)jpylyzingEventHandler, schemaValidatorEventHandler, schematronValidatorEventHandler),
+                Arrays.asList((TreeEventHandler) jpylyzingEventHandler,
+                        schemaValidatorEventHandler,
+                        schematronValidatorEventHandler),
                 resultCollector);
-
         runner.handleNodeBegins(new DataFileNodeBeginsParsingEvent(file.getName()));
         //simulate a tree iteration
-
         try {
-            runner.handleAttribute(new FileAttributeParsingEvent(file.getName() + JpylyzingEventHandler.CONTENTS, file));
+            runner.handleAttribute(new FileAttributeParsingEvent(file.getName() + JpylyzingEventHandler.CONTENTS,
+                    file));
         } catch (RuntimeException e) {
             resultCollector.addFailure(file.getName(),
                     "exception",
@@ -83,20 +75,17 @@ public class NinestarsFileQA {
                     Strings.getStackTrace(e));
         }
         // Only run the validations if jpylyzer succeeds it's run.
-        if(resultCollector.isSuccess()) {
-            ParsingEvent parsingEvent = runner.popInjectedEvent();
+        if (resultCollector.isSuccess()) {
+            AttributeParsingEvent parsingEvent = runner.popInjectedEvent();
             runner.handleAttribute(parsingEvent);
             runner.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
             runner.handleFinish();
         }
-
         String result = NinestarsUtils.convertResult(resultCollector);
         System.out.println(result);
-
         if (!resultCollector.isSuccess()) {
             return 1;
         }
-
         return 0;
     }
 
@@ -109,7 +98,9 @@ public class NinestarsFileQA {
 
     /**
      * Get file parameter from arguments
+     *
      * @param args Will read first argument as a file name
+     *
      * @return The file from first argument
      * @throws RuntimeException on trouble parsing argument.
      */
@@ -119,6 +110,5 @@ public class NinestarsFileQA {
             throw new RuntimeException("Must have first argument as existing file");
         }
         return file;
-
     }
 }
