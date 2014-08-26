@@ -62,7 +62,7 @@ The database contains information about the data in a batch.
 Optionally you can disable some of the checks by adding one or more of the following command line options to the end of
 the command line:
 
-* `--disable=CHECKSUM` Disable validation of checksum files
+* `--disable=CHECKSUM` Disable validation of checksum files. This is one of the slower checks
 * `--disable=SCHEMA_VALIDATOR` Disable xml schema validation
 * `--disable=SCHEMATRON` Disable rule based validation of xml files
 * `--disable=FILM_XML` Disable checks of film xml, including checks against database values
@@ -72,7 +72,7 @@ the command line:
 * `--disable=MODS_XPATH` Disable checks of MODS file
 * `--disable=MIX_FILM` Disable checks of MIX resolution agains FILM resolution
 * `--disable=MIX_XML` Disable checks of MIX file
-* `--disable=JPYLYZER` Disable analysis of JP2 file
+* `--disable=JPYLYZER` Disable analysis of JP2 file. This is one of the slower checks.
 
 Note that if you disable the JPYLYZER component, you will not be checking some of the checks in ALTO and MIX files, that
 depend on information about the Jpeg 2000 files.

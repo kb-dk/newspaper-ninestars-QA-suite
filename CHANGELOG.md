@@ -1,3 +1,10 @@
+1.10
+* Multithreaded metadatachecker
+* Much faster parsing of xml for schemavalidation
+* Cache parsed XML to save the CPU
+* Checksum check is now a metadata check and will thus happen in parallel
+* Allow for selectively disabling of tests
+
 1.9
 
 * Update structure and metadata checkers to handle partiel dates in editions and film
