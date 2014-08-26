@@ -4,6 +4,7 @@
 * Cache parsed XML to save the CPU
 * Checksum check is now a metadata check and will thus happen in parallel
 * Allow for selectively disabling of tests
+* batchID and disabled checks are now mentioned in the result output
 
 1.9
 
