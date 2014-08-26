@@ -44,10 +44,10 @@ public class NinestarsFileQA {
         }
         String controlPoliciesPath = NinestarsUtils.getControlPolicies();
         String jpylyzerPath = NinestarsUtils.getJpylyzerPath();
-        return runValidation(file, controlPoliciesPath, jpylyzerPath);
+        return runValidation(file, jpylyzerPath);
     }
 
-    protected static int runValidation(File file, String controlPoliciesPath, String jpylyzerPath) throws
+    protected static int runValidation(File file, String jpylyzerPath) throws
                                                                                                    FileNotFoundException {
         DocumentCache documentCache = new DocumentCache();
         ResultCollector resultCollector = new ResultCollector("file", NinestarsUtils.getVersion());
@@ -83,7 +83,7 @@ public class NinestarsFileQA {
             runner.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
             runner.handleFinish();
         }
-        String result = NinestarsUtils.convertResult(resultCollector, new HashSet<MetadataChecksFactory.Checks>());
+        String result = NinestarsUtils.convertResult(resultCollector, file.getName(), new HashSet<MetadataChecksFactory.Checks>());
         System.out.println(result);
         if (!resultCollector.isSuccess()) {
             return 1;

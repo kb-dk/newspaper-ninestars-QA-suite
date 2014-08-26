@@ -86,7 +86,7 @@ public class NinestarsBatchQA {
             mfPakDao.close();
         }
         ResultCollector mergedResult = NinestarsUtils.mergeResults(resultList);
-        String result = NinestarsUtils.convertResult(mergedResult,disabledChecks);
+        String result = NinestarsUtils.convertResult(mergedResult,batch.getFullID(),disabledChecks);
         System.out.println(result);
         if (!mergedResult.isSuccess()) {
             return 1;

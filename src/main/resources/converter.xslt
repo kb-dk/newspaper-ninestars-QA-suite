@@ -7,6 +7,10 @@
     <xsl:output omit-xml-declaration="yes" indent="yes"/>
 
 
+    <xsl:param name="disabledChecks" select="''">
+
+    </xsl:param>
+    <xsl:param name="batchID"/>
     <!--<xsl:template match="node()|@*" name="identity">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -29,6 +33,14 @@
             <xsl:attribute name="version">
                 <xsl:value-of select="@version"/>
             </xsl:attribute>
+            <xsl:attribute name="batchID">
+                <xsl:value-of select="$batchID"/>
+            </xsl:attribute>
+            <xsl:if test="string-length($disabledChecks)>0">
+            <xsl:attribute name="disabledChecks">
+                <xsl:value-of select="$disabledChecks"/>
+            </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>

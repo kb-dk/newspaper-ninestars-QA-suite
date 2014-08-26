@@ -18,7 +18,7 @@ public class NinestarsFileQATest {
 
         File jp2File = getJP2File();
         String jpylyzyrPath = getJpylyzerPath();
-        int result = NinestarsFileQA.runValidation(jp2File, null, jpylyzyrPath);
+        int result = NinestarsFileQA.runValidation(jp2File, jpylyzyrPath);
         Assert.assertEquals(result, 0, "Failed to validate jp2file");
     }
 
@@ -29,7 +29,7 @@ public class NinestarsFileQATest {
 
         File invalidJp2File = getInvalidJP2File();
         String jpylyzyrPath = getJpylyzerPath();
-        int result = NinestarsFileQA.runValidation(invalidJp2File, null, jpylyzyrPath);
+        int result = NinestarsFileQA.runValidation(invalidJp2File, jpylyzyrPath);
         Assert.assertEquals(result, 1, "Failed to validate jp2file");
     }
 
@@ -38,7 +38,7 @@ public class NinestarsFileQATest {
 
         File jp2File = getJP2File();
         String jpylyzyrPath = getJpylyzerPath() + "not-valid-path";
-        int result = NinestarsFileQA.runValidation(jp2File, null, jpylyzyrPath);
+        int result = NinestarsFileQA.runValidation(jp2File, jpylyzyrPath);
         Assert.assertEquals(result, 1, "Failed to validate jp2file");
     }
     

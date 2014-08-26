@@ -50,6 +50,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
+            <xs:attribute name="batchID" type="xs:string"/>
+            <xs:attribute name="disabledChecks" type="xs:string"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="result">

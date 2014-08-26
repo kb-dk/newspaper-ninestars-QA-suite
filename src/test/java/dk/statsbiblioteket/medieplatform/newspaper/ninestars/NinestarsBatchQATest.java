@@ -50,8 +50,9 @@ public class NinestarsBatchQATest {
         String reference = "reference";
         String type = "type";
         resultCollector.addFailure(reference, type, "component", "description", "details1\n", "details2\n");
-
-        String converted = NinestarsUtils.convertResult(resultCollector, new HashSet<MetadataChecksFactory.Checks>());
+        final Batch batch = new Batch("4000213213", 3);
+        final HashSet<MetadataChecksFactory.Checks> disabledChecks = new HashSet<>();
+        String converted = NinestarsUtils.convertResult(resultCollector, batch.getFullID(), disabledChecks);
         //System.out.println(converted);
 
         URL schemaFile = Thread.currentThread().getContextClassLoader().getResource("xsd/qaresult.xsd");
@@ -62,11 +63,54 @@ public class NinestarsBatchQATest {
         }
         Document convertedAsDom = DOM.stringToDOM(converted, true);
         XPathSelector xpath = DOM.createXPathSelector("qa", "http://schemas.statsbiblioteket.dk/qaresult/");
+        String batchID = xpath.selectString(convertedAsDom, "/qa:qaresult/@batchID");
+        Assert.assertEquals(batchID, batch.getFullID());
+        String disabledChecksResult = xpath.selectString(convertedAsDom, "/qa:qaresult/@disabledChecks");
+        Assert.assertEquals(disabledChecksResult,"");
         String typeSelected = xpath.selectString(convertedAsDom,
                                                  "/qa:qaresult/qa:qafailures/qa:qafailure[qa:filereference = '"
                                                  + reference + "']/qa:type");
         Assert.assertEquals(typeSelected, type);
 
+    }
+
+
+    /**
+     * Test the conversion from a resultCollector to a ninestars QA report
+     */
+    @Test
+    public void testConvertWithDisabledChecks() {
+        ResultCollector resultCollector = new ResultCollector("batch", "0.1");
+        String reference = "reference";
+        String type = "type";
+        resultCollector.addFailure(reference, type, "component", "description", "details1\n", "details2\n");
+        final HashSet<MetadataChecksFactory.Checks> disabledChecks = new HashSet<>();
+        disabledChecks.add(MetadataChecksFactory.Checks.CHECKSUM);
+        disabledChecks.add(MetadataChecksFactory.Checks.JPYLYZER);
+        final Batch batch = new Batch("4000213213", 3);
+        String converted = NinestarsUtils.convertResult(resultCollector, batch.getFullID(), disabledChecks);
+        //System.out.println(converted);
+        URL schemaFile = Thread.currentThread().getContextClassLoader().getResource("xsd/qaresult.xsd");
+        try {
+            checkSchema(converted, schemaFile);
+        } catch (SAXException | IOException e) {
+            Assert.fail();
+        }
+        Document convertedAsDom = DOM.stringToDOM(converted, true);
+        XPathSelector xpath = DOM.createXPathSelector("qa", "http://schemas.statsbiblioteket.dk/qaresult/");
+        String batchID = xpath.selectString(convertedAsDom,
+                "/qa:qaresult/@batchID");
+        Assert.assertEquals(batchID, batch.getFullID());
+
+        String disabledChecksResult = xpath.selectString(convertedAsDom, "/qa:qaresult/@disabledChecks");
+        String[] disabledChecksSplit = disabledChecksResult.split(",");
+        Assert.assertEquals(disabledChecks.size(),disabledChecksSplit.length);
+        for (String check : disabledChecksSplit) {
+            Assert.assertTrue(disabledChecks.contains(MetadataChecksFactory.Checks.valueOf(check)));
+        }
+        String typeSelected = xpath.selectString(convertedAsDom,
+                "/qa:qaresult/qa:qafailures/qa:qafailure[qa:filereference = '" + reference + "']/qa:type");
+        Assert.assertEquals(typeSelected, type);
     }
 
 

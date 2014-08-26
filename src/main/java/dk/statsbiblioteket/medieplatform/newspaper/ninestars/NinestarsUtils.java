@@ -16,24 +16,34 @@ public class NinestarsUtils {
      *
      * @param result the result to convert
      *
-     * @param disabledChecks
-     * @return the ninestars xml
+     * @param batchFullID
+     *@param disabledChecks  @return the ninestars xml
      */
-    protected static String convertResult(ResultCollector result, Set<MetadataChecksFactory.Checks> disabledChecks) {
+    protected static String convertResult(ResultCollector result, String batchFullID, Set<MetadataChecksFactory.Checks> disabledChecks) {
+        Map<String, String> params = new HashMap<>();
+        params.put("batchID",batchFullID);
+        StringBuilder disabledChecksString = wrapDisabledChecks(disabledChecks);
+        params.put("disabledChecks",disabledChecksString.toString());
         try {
             return XSLT.transform(Thread.currentThread().getContextClassLoader().getResource("converter.xslt"),
-                                  result.toReport());
+                                  result.toReport(),params);
         } catch (TransformerException e) {
             throw new RuntimeException("Failed to transform");
         }
     }
 
-    private static Map<String, String> checksAsParams(Set<MetadataChecksFactory.Checks> disabledChecks) {
-        Map<String,String> result = new HashMap<>();
+    private static StringBuilder wrapDisabledChecks(Set<MetadataChecksFactory.Checks> disabledChecks) {
+        StringBuilder disabledChecksString = new StringBuilder();
+        boolean first = true;
         for (MetadataChecksFactory.Checks disabledCheck : disabledChecks) {
-            result.put(disabledCheck.name(),Boolean.TRUE.toString());
+            if (!first){
+                disabledChecksString.append(",");
+            } else {
+                first = false;
+            }
+            disabledChecksString.append(disabledCheck.name());
         }
-        return result;
+        return disabledChecksString;
     }
 
     /**
