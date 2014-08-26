@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -38,9 +39,9 @@ public class NinestarsBatchQA {
         Batch batch;
         try {
             //Get the batch (id) from the command line
-            batch = getBatch(args);
+            batch = getBatch(args[0]);
             //Create the properties that need to be passed into the components
-            properties = createProperties(args);
+            properties = createProperties(args[0], args[1]);
         } catch (Exception e) {
             usage();
             System.err.println(e.getMessage());
@@ -61,13 +62,7 @@ public class NinestarsBatchQA {
             System.err.println("Unable to initialize MFPAK");
             return 3;
         }
-        if (argsContainFlag(args, "--sleep10sec")) {
-            try {
-                System.out.println("Sleeps for 10 sec so you have time to attach a debugger");
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-            }
-        }
+
         Set<MetadataChecksFactory.Checks> disabledChecks = parseDisabledChecks(args);
         //This is the list of results so far
         ArrayList<ResultCollector> resultList = new ArrayList<>();
@@ -97,9 +92,24 @@ public class NinestarsBatchQA {
 
     private static Set<MetadataChecksFactory.Checks> parseDisabledChecks(String... args) {
         HashSet<MetadataChecksFactory.Checks> result = new HashSet<>();
-        for (MetadataChecksFactory.Checks check : MetadataChecksFactory.Checks.values()) {
-            if (argsContainFlag(args, "--disable="+check.toString())) {
-                result.add(check);
+        for (int i = 2; i < args.length; i++) {
+            String arg = args[i];
+            if (arg.startsWith("--disable=")){
+
+                try {
+                    String checkName = arg.split("=")[1];
+                    try {
+                        MetadataChecksFactory.Checks check = MetadataChecksFactory.Checks.valueOf(checkName);
+                        result.add(check);
+                    } catch (IllegalArgumentException e){
+                        throw new RuntimeException("Failed to parse '"+checkName+"' as a check. The allowed values are "+ Arrays.deepToString(
+                                MetadataChecksFactory.Checks.values()));
+                    }
+                } catch (IndexOutOfBoundsException e){
+                    throw new RuntimeException("Malformed argument '"+arg+"', should be of the form --disable=<CHECK>");
+                }
+            } else {
+                throw new RuntimeException("Malformed argument '" + arg + "', should be of the form --disable=<CHECK>");
             }
         }
         return result;
@@ -114,38 +124,25 @@ public class NinestarsBatchQA {
         return false;
     }
 
-    /**
-     * Get the sql connect string, which should be the second command line parameter. Returns null if there is no
-     * second parameter
-     *
-     * @param args the command line args
-     *
-     * @return the sql connect string
-     */
-    private static String getSQLString(String[] args) {
-        if (args.length > 1) {
-            return args[1];
-        } else {
-            throw new RuntimeException("Missing sql parameter as second parameter");
-        }
-    }
+
 
     /**
      * Create a properties construct with just one property, "scratch". Scratch denotes the folder where the batches
      * reside. It is takes as the parent of the first argument, which should be the path to the batch
      *
-     * @param args the args
+     * @param batchPath the path to the batch
+     * @param sqlString the Sql connect string
      *
      * @return a properties construct
      * @throws RuntimeException on trouble parsing arguments.
      */
-    private static Properties createProperties(String[] args) throws IOException {
+    private static Properties createProperties(String batchPath,String sqlString) throws IOException {
         Properties properties = new Properties(System.getProperties());
-        File batchPath = new File(args[0]);
-        setIfNotSet(properties, ConfigConstants.ITERATOR_FILESYSTEM_BATCHES_FOLDER, batchPath.getParent());
+        File batchFile = new File(batchPath);
+        setIfNotSet(properties, ConfigConstants.ITERATOR_FILESYSTEM_BATCHES_FOLDER, batchFile.getParent());
         setIfNotSet(properties, ConfigConstants.JPYLYZER_PATH, NinestarsUtils.getJpylyzerPath());
         setIfNotSet(properties, ConfigConstants.AT_NINESTARS, Boolean.TRUE.toString());
-        setIfNotSet(properties, ConfigConstants.MFPAK_URL, getSQLString(args));
+        setIfNotSet(properties, ConfigConstants.MFPAK_URL, sqlString);
         setIfNotSet(properties,
                 ConfigConstants.AUTONOMOUS_BATCH_STRUCTURE_STORAGE_DIR,
                 createTempDir().getAbsolutePath());
@@ -182,12 +179,12 @@ public class NinestarsBatchQA {
     /**
      * Parse the batch and round trip id from the first argument to the script
      *
-     * @param args the command line arguments
+     * @param arg0 the first command line argument
      *
      * @return the batch id as a batch with no events
      */
-    protected static Batch getBatch(String[] args) {
-        File batchPath = new File(args[0]);
+    protected static Batch getBatch(String arg0) {
+        File batchPath = new File(arg0);
         if (!batchPath.isDirectory()) {
             throw new RuntimeException("Must have first argument as existing directory");
         }

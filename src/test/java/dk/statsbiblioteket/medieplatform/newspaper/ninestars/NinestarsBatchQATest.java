@@ -34,7 +34,7 @@ public class NinestarsBatchQATest {
     @Test
     public void testParseArgs(){
         String[] args = new String[]{Thread.currentThread().getContextClassLoader().getResource("B400022028241-RT2").getFile()};
-        Batch batch = NinestarsBatchQA.getBatch(args);
+        Batch batch = NinestarsBatchQA.getBatch(args[0]);
         Assert.assertEquals(batch.getBatchID(),"400022028241");
         Assert.assertEquals(batch.getRoundTripNumber().intValue(),2);
 
