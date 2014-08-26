@@ -59,6 +59,24 @@ Example: "jdbc:postgresql://dbhost/mfpak?user=mfpak&password=mfpass"
 
 The database contains information about the data in a batch.
 
+Optionally you can disable some of the checks by adding one or more of the following command line options to the end of
+the command line:
+
+* `--disable=CHECKSUM` Disable validation of checksum files
+* `--disable=SCHEMA_VALIDATOR` Disable xml schema validation
+* `--disable=SCHEMATRON` Disable rule based validation of xml files
+* `--disable=FILM_XML` Disable checks of film xml, including checks against database values
+* `--disable=EDITION_MODS` Disable checks of edition xml, including checks against database values
+* `--disable=ALTO_XPATH` Disable checks of alto xml
+* `--disable=ALTO_MIX` Disable checks comparing alto, mix and jp2 file dimensions 
+* `--disable=MODS_XPATH` Disable checks of MODS file
+* `--disable=MIX_FILM` Disable checks of MIX resolution agains FILM resolution
+* `--disable=MIX_XML` Disable checks of MIX file
+* `--disable=JPYLYZER` Disable analysis of JP2 file
+
+Note that if you disable the JPYLYZER component, you will not be checking some of the checks in ALTO and MIX files, that
+depend on information about the Jpeg 2000 files.
+
 ## Output
 
 Both tools will output an XML file to stdout, containing the result of the validation (success or failure) and a list of
