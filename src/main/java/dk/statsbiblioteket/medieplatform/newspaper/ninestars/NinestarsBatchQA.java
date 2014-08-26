@@ -1,24 +1,25 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ConfigConstants;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.newspaper.BatchStructureCheckerComponent;
-import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
 import dk.statsbiblioteket.newspaper.metadatachecker.MetadataCheckerComponent;
+import dk.statsbiblioteket.newspaper.metadatachecker.MetadataChecksFactory;
 import dk.statsbiblioteket.newspaper.mfpakintegration.batchcontext.BatchContextUtils;
 import dk.statsbiblioteket.newspaper.mfpakintegration.configuration.MfPakConfiguration;
 import dk.statsbiblioteket.newspaper.mfpakintegration.database.MfPakDAO;
 import dk.statsbiblioteket.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /** This is the main class of the Ninestars QA suite */
@@ -67,17 +68,13 @@ public class NinestarsBatchQA {
             } catch (InterruptedException e) {
             }
         }
+        Set<MetadataChecksFactory.Checks> disabledChecks = parseDisabledChecks(args);
         //This is the list of results so far
         ArrayList<ResultCollector> resultList = new ArrayList<>();
         try {
             //Make the components
-            RunnableComponent md5CheckerComponent = new MD5CheckerComponent(properties);
             RunnableComponent batchStructureCheckerComponent = new BatchStructureCheckerComponent(properties, mfPakDao);
-            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, mfPakDao);
-            if (!(argsContainFlag(args, "--skip-md5-check"))) {
-                //Run the md5 checker component, where the result is added to the resultlist
-                runComponent(batch, resultList, md5CheckerComponent);
-            }
+            RunnableComponent metadataCheckerComponent = new MetadataCheckerComponent(properties, mfPakDao,disabledChecks);
             //Run the batch structure checker component, where the result is added to the resultlist
             runComponent(batch, resultList, batchStructureCheckerComponent);
             //Run the batch metadata checker component, where the result is added to the resultlist
@@ -89,13 +86,23 @@ public class NinestarsBatchQA {
             mfPakDao.close();
         }
         ResultCollector mergedResult = NinestarsUtils.mergeResults(resultList);
-        String result = NinestarsUtils.convertResult(mergedResult);
+        String result = NinestarsUtils.convertResult(mergedResult,disabledChecks);
         System.out.println(result);
         if (!mergedResult.isSuccess()) {
             return 1;
         } else {
             return 0;
         }
+    }
+
+    private static Set<MetadataChecksFactory.Checks> parseDisabledChecks(String... args) {
+        HashSet<MetadataChecksFactory.Checks> result = new HashSet<>();
+        for (MetadataChecksFactory.Checks check : MetadataChecksFactory.Checks.values()) {
+            if (argsContainFlag(args, "--disable="+check.toString())) {
+                result.add(check);
+            }
+        }
+        return result;
     }
 
     private static boolean argsContainFlag(String[] args, String flag) {
@@ -143,6 +150,7 @@ public class NinestarsBatchQA {
                 ConfigConstants.AUTONOMOUS_BATCH_STRUCTURE_STORAGE_DIR,
                 createTempDir().getAbsolutePath());
         setIfNotSet(properties, ConfigConstants.THREADS_PER_BATCH, Runtime.getRuntime().availableProcessors() + "");
+
         return properties;
     }
 

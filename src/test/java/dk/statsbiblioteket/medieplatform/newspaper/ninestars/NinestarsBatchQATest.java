@@ -5,6 +5,7 @@ import dk.statsbiblioteket.medieplatform.autonomous.ConfigConstants;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
+import dk.statsbiblioteket.newspaper.metadatachecker.MetadataChecksFactory;
 import dk.statsbiblioteket.util.xml.DOM;
 import dk.statsbiblioteket.util.xml.XPathSelector;
 import org.testng.Assert;
@@ -22,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Properties;
 
 public class NinestarsBatchQATest {
@@ -49,7 +51,7 @@ public class NinestarsBatchQATest {
         String type = "type";
         resultCollector.addFailure(reference, type, "component", "description", "details1\n", "details2\n");
 
-        String converted = NinestarsUtils.convertResult(resultCollector);
+        String converted = NinestarsUtils.convertResult(resultCollector, new HashSet<MetadataChecksFactory.Checks>());
         //System.out.println(converted);
 
         URL schemaFile = Thread.currentThread().getContextClassLoader().getResource("xsd/qaresult.xsd");

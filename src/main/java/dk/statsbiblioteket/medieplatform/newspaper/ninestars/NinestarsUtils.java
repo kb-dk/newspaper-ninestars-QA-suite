@@ -1,11 +1,14 @@
 package dk.statsbiblioteket.medieplatform.newspaper.ninestars;
 
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
+import dk.statsbiblioteket.newspaper.metadatachecker.MetadataChecksFactory;
 import dk.statsbiblioteket.util.xml.XSLT;
 
 import javax.xml.transform.TransformerException;
-import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class NinestarsUtils {
     /**
@@ -13,15 +16,24 @@ public class NinestarsUtils {
      *
      * @param result the result to convert
      *
+     * @param disabledChecks
      * @return the ninestars xml
      */
-    protected static String convertResult(ResultCollector result) {
+    protected static String convertResult(ResultCollector result, Set<MetadataChecksFactory.Checks> disabledChecks) {
         try {
             return XSLT.transform(Thread.currentThread().getContextClassLoader().getResource("converter.xslt"),
                                   result.toReport());
         } catch (TransformerException e) {
             throw new RuntimeException("Failed to transform");
         }
+    }
+
+    private static Map<String, String> checksAsParams(Set<MetadataChecksFactory.Checks> disabledChecks) {
+        Map<String,String> result = new HashMap<>();
+        for (MetadataChecksFactory.Checks disabledCheck : disabledChecks) {
+            result.put(disabledCheck.name(),Boolean.TRUE.toString());
+        }
+        return result;
     }
 
     /**

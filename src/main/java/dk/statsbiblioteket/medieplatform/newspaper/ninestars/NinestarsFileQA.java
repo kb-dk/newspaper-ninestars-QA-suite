@@ -8,6 +8,7 @@ import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.Defau
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.EventRunner;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.TreeEventHandler;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.filesystem.FileAttributeParsingEvent;
+import dk.statsbiblioteket.newspaper.metadatachecker.MetadataChecksFactory;
 import dk.statsbiblioteket.newspaper.metadatachecker.SchemaValidatorEventHandler;
 import dk.statsbiblioteket.newspaper.metadatachecker.SchematronValidatorEventHandler;
 import dk.statsbiblioteket.newspaper.metadatachecker.caches.DocumentCache;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class NinestarsFileQA {
 
@@ -55,7 +57,7 @@ public class NinestarsFileQA {
         DefaultTreeEventHandler schemaValidatorEventHandler = new SchemaValidatorEventHandler(resultCollector,
                 documentCache);
         DefaultTreeEventHandler schematronValidatorEventHandler = new SchematronValidatorEventHandler(resultCollector,
-                controlPoliciesPath,
+
                 documentCache);
         EventRunner runner = new EventRunner(null,
                 Arrays.asList((TreeEventHandler) jpylyzingEventHandler,
@@ -81,7 +83,7 @@ public class NinestarsFileQA {
             runner.handleNodeEnd(new DataFileNodeEndsParsingEvent(file.getName()));
             runner.handleFinish();
         }
-        String result = NinestarsUtils.convertResult(resultCollector);
+        String result = NinestarsUtils.convertResult(resultCollector, new HashSet<MetadataChecksFactory.Checks>());
         System.out.println(result);
         if (!resultCollector.isSuccess()) {
             return 1;
