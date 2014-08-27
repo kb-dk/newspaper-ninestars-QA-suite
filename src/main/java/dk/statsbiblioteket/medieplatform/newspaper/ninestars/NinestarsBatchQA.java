@@ -34,6 +34,11 @@ public class NinestarsBatchQA {
     }
 
     protected static int doMain(String... args) {
+        if (args.length < 2) {
+            System.err.println("Too few parameters");
+            usage();
+            return 2;
+        }
         log.info("Entered " + NinestarsBatchQA.class);
         Properties properties;
         Batch batch;
@@ -94,19 +99,21 @@ public class NinestarsBatchQA {
         HashSet<MetadataChecksFactory.Checks> result = new HashSet<>();
         for (int i = 2; i < args.length; i++) {
             String arg = args[i];
-            if (arg.startsWith("--disable=")){
+            if (arg.startsWith("--disable=")) {
 
                 try {
                     String checkName = arg.split("=")[1];
                     try {
                         MetadataChecksFactory.Checks check = MetadataChecksFactory.Checks.valueOf(checkName);
                         result.add(check);
-                    } catch (IllegalArgumentException e){
-                        throw new RuntimeException("Failed to parse '"+checkName+"' as a check. The allowed values are "+ Arrays.deepToString(
-                                MetadataChecksFactory.Checks.values()));
+                    } catch (IllegalArgumentException e) {
+                        throw new RuntimeException(
+                                "Failed to parse '" + checkName + "' as a check. The allowed values are "
+                                        + Arrays.deepToString(MetadataChecksFactory.Checks.values()));
                     }
-                } catch (IndexOutOfBoundsException e){
-                    throw new RuntimeException("Malformed argument '"+arg+"', should be of the form --disable=<CHECK>");
+                } catch (IndexOutOfBoundsException e) {
+                    throw new RuntimeException(
+                            "Malformed argument '" + arg + "', should be of the form --disable=<CHECK>");
                 }
             } else {
                 throw new RuntimeException("Malformed argument '" + arg + "', should be of the form --disable=<CHECK>");
@@ -114,17 +121,6 @@ public class NinestarsBatchQA {
         }
         return result;
     }
-
-    private static boolean argsContainFlag(String[] args, String flag) {
-        for (String arg : args) {
-            if (arg.equals(flag)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 
     /**
      * Create a properties construct with just one property, "scratch". Scratch denotes the folder where the batches
@@ -226,6 +222,11 @@ public class NinestarsBatchQA {
      * Print usage.
      */
     private static void usage() {
-        System.err.println("Usage: \n" + "java " + NinestarsFileQA.class.getName() + " <batchdirectory> <sqlconnectionstring>");
+        System.err.print(
+                "Usage: \n" + "java " + NinestarsFileQA.class.getName() + " <batchdirectory> <sqlconnectionstring>");
+        for (MetadataChecksFactory.Checks check : MetadataChecksFactory.Checks.values()) {
+            System.err.print(" [--disable=" + check.name() + "]");
+        }
+        System.err.println();
     }
 }

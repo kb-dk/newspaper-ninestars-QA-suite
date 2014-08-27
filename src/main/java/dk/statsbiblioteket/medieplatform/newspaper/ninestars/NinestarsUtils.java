@@ -16,10 +16,12 @@ public class NinestarsUtils {
      *
      * @param result the result to convert
      *
-     * @param batchFullID
-     *@param disabledChecks  @return the ninestars xml
+     * @param batchFullID The batch ID to put in the report
+     * @param disabledChecks  a set of enums detailing the checks to be disabled
+     * @return the ninestars xml
      */
-    protected static String convertResult(ResultCollector result, String batchFullID, Set<MetadataChecksFactory.Checks> disabledChecks) {
+    protected static String convertResult(ResultCollector result, String batchFullID,
+                                          Set<MetadataChecksFactory.Checks> disabledChecks) {
         Map<String, String> params = new HashMap<>();
         params.put("batchID",batchFullID);
         StringBuilder disabledChecksString = wrapDisabledChecks(disabledChecks);
