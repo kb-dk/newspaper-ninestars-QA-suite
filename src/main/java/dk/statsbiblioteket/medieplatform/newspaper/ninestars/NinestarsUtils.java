@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class NinestarsUtils {
     /**
@@ -37,7 +38,7 @@ public class NinestarsUtils {
     private static StringBuilder wrapDisabledChecks(Set<MetadataChecksFactory.Checks> disabledChecks) {
         StringBuilder disabledChecksString = new StringBuilder();
         boolean first = true;
-        for (MetadataChecksFactory.Checks disabledCheck : disabledChecks) {
+        for (MetadataChecksFactory.Checks disabledCheck : new TreeSet<>(disabledChecks)) {
             if (!first){
                 disabledChecksString.append(",");
             } else {

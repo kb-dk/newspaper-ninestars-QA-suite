@@ -60,7 +60,7 @@ public class NinestarsPostPackageTest {
         runner.run();
         String output = runner.getProcessOutputAsString();
         Assert.assertTrue(output.contains(
-                "disabledChecks=\"EDITION_MODS,ALTO_XPATH,MIX_XML,CHECKSUM,MODS_XPATH,SCHEMATRON,ALTO_MIX,FILM_XML\""),
+                "disabledChecks=\"ALTO_XPATH,ALTO_MIX,CHECKSUM,EDITION_MODS,MODS_XPATH,SCHEMATRON,MIX_XML,FILM_XML\""),
                 output);
         Assert.assertFalse(output.contains("<qa:type>metadata</qa:type>"));
         Assert.assertEquals(runner.getReturnCode(), 1);
