@@ -1,4 +1,4 @@
-1.10
+2.0
 * Multithreaded metadatachecker
 * Much faster parsing of xml for schemavalidation
 * Cache parsed XML to save the CPU
