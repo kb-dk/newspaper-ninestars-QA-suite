@@ -1,5 +1,6 @@
 <qa:qaresult xmlns:qa="http://schemas.statsbiblioteket.dk/qaresult/"
              tool="qafile"
+             batchID="B400027043907-RT2"
              version="0.5">
     <qa:result>Success</qa:result>
     

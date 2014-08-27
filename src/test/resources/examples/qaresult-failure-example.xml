@@ -1,5 +1,7 @@
 <qa:qaresult xmlns:qa="http://schemas.statsbiblioteket.dk/qaresult/"
              tool="qabatch"
+             batchID="B400027043907-RT2"
+             disabledChecks="ALTO_MIX"
              version="0.5">
     <qa:result>Failure</qa:result>
     <qa:qafailures>
