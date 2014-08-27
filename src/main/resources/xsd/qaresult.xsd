@@ -77,7 +77,7 @@
     <xs:element name="qafailures">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" ref="qafailure"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="qafailure"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
