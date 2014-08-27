@@ -36,13 +36,6 @@
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>newspaper-md5-checker</artifactId>
-            <version>1.4</version>
-
-        </dependency>
-
-        <dependency>
-            <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-structure-checker</artifactId>
             <version>1.8-SNAPSHOT</version>
 
