@@ -4,7 +4,6 @@ import dk.statsbiblioteket.medieplatform.autonomous.Batch;
 import dk.statsbiblioteket.medieplatform.autonomous.ConfigConstants;
 import dk.statsbiblioteket.medieplatform.autonomous.ResultCollector;
 import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
-import dk.statsbiblioteket.newspaper.md5checker.MD5CheckerComponent;
 import dk.statsbiblioteket.newspaper.metadatachecker.MetadataChecksFactory;
 import dk.statsbiblioteket.util.xml.DOM;
 import dk.statsbiblioteket.util.xml.XPathSelector;
@@ -147,24 +146,6 @@ public class NinestarsBatchQATest {
         MockComponent component = new MockComponent(getProperties());
         ResultCollector result1 = new ResultCollector(component.getComponentName(), component.getComponentVersion());
         ResultCollector result = NinestarsBatchQA.doWork(null, component, result1);
-        Assert.assertTrue(result.isSuccess());
-
-    }
-
-    /**
-     * Test the invocation of the MD5CheckerComponent
-     * @throws WorkException if the work failed
-     * @throws IOException if the propertiesfile could not be read
-     */
-    @Test(groups = "integrationTest", enabled = true)
-    public void testRunComponentMD5()
-            throws
-            WorkException,
-            IOException {
-        RunnableComponent component = new MD5CheckerComponent(getProperties());
-        ResultCollector result1 = new ResultCollector(component.getComponentName(), component.getComponentVersion());
-        Batch batch = new Batch("400022028241");
-        ResultCollector result = NinestarsBatchQA.doWork(batch, component, result1);
         Assert.assertTrue(result.isSuccess());
 
     }
