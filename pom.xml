@@ -8,14 +8,14 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>newspaper-ninestars-QA-suite</artifactId>
-    <version>2.0</version>
+    <version>2.1-SNAPSHOT</version>
 
     <dependencies>
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>1.12</version>
+            <version>1.13-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sourceforge.saxon</groupId>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-metadata-checker</artifactId>
-            <version>1.12</version>
+            <version>1.13-SNAPSHOT</version>
             <type>tar.gz</type>
             <classifier>jpylyzer</classifier>
                   </dependency>
@@ -37,14 +37,14 @@
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-batch-structure-checker</artifactId>
-            <version>1.8</version>
+            <version>1.9-SNAPSHOT</version>
 
         </dependency>
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>newspaper-mfpak-integration</artifactId>
-            <version>1.10</version>
+            <version>1.11-SNAPSHOT</version>
 
         </dependency>
 
@@ -162,7 +162,7 @@
         <connection>scm:git:https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-ninestars-QA-suite</developerConnection>
         <url>https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</url>
-        <tag>newspaper-ninestars-QA-suite-2.0</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
 
