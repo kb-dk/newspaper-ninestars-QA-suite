@@ -82,7 +82,7 @@ depend on information about the Jpeg 2000 files.
 Both tools will output an XML file to stdout, containing the result of the validation (success or failure) and a list of
 errors, if any.
 
-The schema for the XML file can be found here [Schema](xsd/qaresult).
+The schema for the XML file can be found here [Schema](xsd/qaresult.xsd).
 
 In general, messages will refer to the specification, when reporting an error. For errors regarding file structure,
 refer to this [list of checks](https://sbforge.org/display/NEWSPAPER/Structure+checks+done) for details.
