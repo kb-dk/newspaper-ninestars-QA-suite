@@ -9,7 +9,7 @@ import dk.statsbiblioteket.medieplatform.autonomous.RunnableComponent;
 
 import java.util.Properties;
 
-public class MockComponent implements RunnableComponent {
+public class MockComponent implements RunnableComponent<Batch> {
 
     public MockComponent(Properties properties) {
 
@@ -32,7 +32,7 @@ public class MockComponent implements RunnableComponent {
     }
 
     @Override
-    public void doWorkOnBatch(Batch batch,
+    public void doWorkOnItem(Batch batch,
                               ResultCollector resultCollector)
             throws
             Exception {

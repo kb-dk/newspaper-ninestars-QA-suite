@@ -205,7 +205,7 @@ public class NinestarsBatchQA {
     protected static ResultCollector doWork(Batch batch, RunnableComponent component,
                                             ResultCollector resultCollector) throws WorkException {
         try {
-            component.doWorkOnBatch(batch, resultCollector);
+            component.doWorkOnItem(batch, resultCollector);
         } catch (Exception e) {
             log.error("Failed to do work on component {}", component.getComponentName(), e);
             resultCollector.addFailure(batch.getFullID(),
