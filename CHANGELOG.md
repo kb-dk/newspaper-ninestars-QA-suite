@@ -1,3 +1,6 @@
+2.1
+* Use newest version of item event framework. No functional changes for this suite.
+
 2.0
 * Multithreaded metadatachecker
 * Much faster parsing of xml for schemavalidation
