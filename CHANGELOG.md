@@ -1,5 +1,6 @@
 2.1
 * Use newest version of item event framework. No functional changes for this suite.
+* Configuration has been extended and changed and example config has been updated. Please update your configuration files.
 
 2.0
 * Multithreaded metadatachecker
