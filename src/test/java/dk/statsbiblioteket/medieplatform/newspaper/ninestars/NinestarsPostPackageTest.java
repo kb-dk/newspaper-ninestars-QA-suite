@@ -54,15 +54,16 @@ public class NinestarsPostPackageTest {
                 "--disable=" + MetadataChecksFactory.Checks.MIX_XML,
                 "--disable=" + MetadataChecksFactory.Checks.ALTO_XPATH,
                 "--disable=" + MetadataChecksFactory.Checks.SCHEMATRON,
+                "--disable=" + MetadataChecksFactory.Checks.SCHEMA_VALIDATOR,
                 "--disable=" + MetadataChecksFactory.Checks.EDITION_MODS,
                 "--disable=" + MetadataChecksFactory.Checks.CHECKSUM);
         runner.setOutputCollectionByteSize(Integer.MAX_VALUE);
         runner.run();
         String output = runner.getProcessOutputAsString();
         Assert.assertTrue(output.contains(
-                "disabledChecks=\"ALTO_XPATH,ALTO_MIX,CHECKSUM,EDITION_MODS,MODS_XPATH,SCHEMATRON,MIX_XML,FILM_XML\""),
+                "disabledChecks=\"ALTO_XPATH,ALTO_MIX,CHECKSUM,EDITION_MODS,MODS_XPATH,SCHEMATRON,SCHEMA_VALIDATOR,MIX_XML,FILM_XML\""),
                 output);
-        Assert.assertFalse(output.contains("<qa:type>metadata</qa:type>"));
+        Assert.assertFalse(output.contains("<qa:type>metadata</qa:type>"),output);
         Assert.assertEquals(runner.getReturnCode(), 1);
     }
 }
