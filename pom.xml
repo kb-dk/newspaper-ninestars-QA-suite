@@ -14,7 +14,7 @@
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>newspaper-batch-metadata-checker</artifactId>
+            <artifactId>newspaper-batch-metadata-checker-component</artifactId>
             <version>1.14-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>newspaper-batch-metadata-checker</artifactId>
+            <artifactId>newspaper-batch-metadata-checker-component</artifactId>
             <version>1.14-SNAPSHOT</version>
             <type>tar.gz</type>
             <classifier>jpylyzer</classifier>
@@ -36,7 +36,7 @@
 
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
-            <artifactId>newspaper-batch-structure-checker</artifactId>
+            <artifactId>newspaper-batch-structure-checker-component</artifactId>
             <version>1.10-SNAPSHOT</version>
 
         </dependency>

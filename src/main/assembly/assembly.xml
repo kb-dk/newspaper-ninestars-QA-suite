@@ -16,7 +16,7 @@
             <useTransitiveDependencies>true</useTransitiveDependencies>
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <excludes>
-                <exclude>dk.statsbiblioteket.newspaper:newspaper-batch-metadata-checker:tar.gz:jpylyzer:*</exclude>
+                <exclude>dk.statsbiblioteket.newspaper:newspaper-batch-metadata-checker-component:tar.gz:jpylyzer:*</exclude>
             </excludes>
             <scope>runtime</scope>
         </dependencySet>
@@ -28,7 +28,7 @@
             <useTransitiveDependencies>true</useTransitiveDependencies>
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <includes>
-                <include>dk.statsbiblioteket.newspaper:newspaper-batch-metadata-checker:tar.gz:jpylyzer:*</include>
+                <include>dk.statsbiblioteket.newspaper:newspaper-batch-metadata-checker-component:tar.gz:jpylyzer:*</include>
             </includes>
             <unpack>true</unpack>
         </dependencySet>
