@@ -8,6 +8,7 @@ import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.Defau
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.EventRunner;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.eventhandlers.TreeEventHandler;
 import dk.statsbiblioteket.medieplatform.autonomous.iterator.filesystem.FileAttributeParsingEvent;
+import dk.statsbiblioteket.newspaper.metadatachecker.AttributeSpec;
 import dk.statsbiblioteket.newspaper.metadatachecker.MetadataChecksFactory;
 import dk.statsbiblioteket.newspaper.metadatachecker.SchemaValidatorEventHandler;
 import dk.statsbiblioteket.newspaper.metadatachecker.SchematronValidatorEventHandler;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 
 public class NinestarsFileQA {
 
@@ -54,11 +56,11 @@ public class NinestarsFileQA {
         JpylyzingEventHandler jpylyzingEventHandler = new JpylyzingEventHandler(resultCollector,
                 file.getParentFile().getAbsolutePath(),
                 jpylyzerPath);
+        Map<String, AttributeSpec> metadataChecksConfig = MetadataChecksFactory.getAttributeValidationConfig();
         DefaultTreeEventHandler schemaValidatorEventHandler = new SchemaValidatorEventHandler(resultCollector,
-                documentCache);
+                documentCache,metadataChecksConfig);
         DefaultTreeEventHandler schematronValidatorEventHandler = new SchematronValidatorEventHandler(resultCollector,
-
-                documentCache);
+                documentCache,metadataChecksConfig);
         EventRunner runner = new EventRunner(null,
                 Arrays.asList((TreeEventHandler) jpylyzingEventHandler,
                         schemaValidatorEventHandler,
