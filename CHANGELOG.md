@@ -1,3 +1,6 @@
+2.0.1
+* Fix bug: Do not corrupt results when failures are added simultaneaously from different threads
+
 2.0
 * Multithreaded metadatachecker
 * Much faster parsing of xml for schemavalidation
