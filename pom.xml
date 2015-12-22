@@ -8,13 +8,13 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>newspaper-ninestars-QA-suite</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.0.1</version>
 
     <dependencies>
         <dependency>
             <groupId>dk.statsbiblioteket.newspaper</groupId>
             <artifactId>batch-event-framework-common</artifactId>
-            <version>1.10.1-SNAPSHOT</version>
+            <version>1.10.1</version>
         </dependency>
 
         <dependency>
@@ -167,7 +167,7 @@
         <connection>scm:git:https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/newspaper-ninestars-QA-suite</developerConnection>
         <url>https://github.com/statsbiblioteket/newspaper-ninestars-QA-suite</url>
-        <tag>newspaper-ninestars-QA-suite-2.0</tag>
+        <tag>newspaper-ninestars-QA-suite-2.0.1</tag>
     </scm>
 </project>
 
